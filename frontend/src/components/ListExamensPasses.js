@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from "../style/listExamen.module.css"; // Importation du module CSS
-import axios from "../api"; // Axios est utilisé ici à la place de fetch
+import axiosInstance from "../axiosInstance"; // Axios est utilisé ici à la place de fetch
 import { useNavigate } from 'react-router-dom'; // Pour rediriger l'utilisateur
 
 const ListExamens = () => {
@@ -11,8 +11,8 @@ const ListExamens = () => {
 
   const navigate = useNavigate(); // Hook pour la navigation
 
-  const recupererNote = async (examen)=>{
-    return await axios.get(`/api/v1/passe-examen/get-note/${userId}/${examen}`).data;
+  const recupererNote = async (examen) => {
+    return await axiosInstance.get(`/api/v1/passe-examen/get-note/${userId}/${examen}`).data;
   };
 
   // Récupération du user depuis le localStorage, et modification du style du <html>
@@ -22,7 +22,7 @@ const ListExamens = () => {
         const newNotes = {};
         for (let examen of examens) {
           try {
-            const res = await axios.get(`/api/v1/passe-examen/get-note/${userId}/${examen.examen.id}`);
+            const res = await axiosInstance.get(`/api/v1/passe-examen/get-note/${userId}/${examen.examen.id}`);
             newNotes[examen.examen.id] = res.data;
           } catch (err) {
             console.error(`Erreur pour l'examen ${examen.examen.id} :`, err);
@@ -34,7 +34,7 @@ const ListExamens = () => {
       fetchNotes();
     }
   }, [examens]);
-  
+
   useEffect(() => {
     const storedUser = localStorage.getItem("user"); // Stockage dans le navigateur
     if (storedUser) {
@@ -46,7 +46,7 @@ const ListExamens = () => {
   //Axios est utilisé ici pour l'appel API (plus propre et plus simple que fetch)
   useEffect(() => {
     if (userId) {
-      axios.get(`/api/v1/passe-examen/examen-corriges/${userId}`)
+      axiosInstance.get(`/api/v1/passe-examen/examen-corriges/${userId}`)
         .then(response => {
           setExamens(response.data); // On récupère directement les données
         })
@@ -78,9 +78,9 @@ const ListExamens = () => {
             examens.map((passeExamen) => (
               <div className={styles.flex} key={passeExamen.id}>
                 <div className={styles.examenItems}>
-                  <p className={styles.titre}><strong style={{color:"#ffbf00"}}>Examen:</strong> {passeExamen.examen?.intitule}</p>
-                  <p className={styles.titre}><strong style={{color:"#ffbf00"}}>Note:</strong> {notes[passeExamen.examen.id] ?? 'Chargement...'}/{passeExamen.examen?.note_max}</p>
-                  <p className={styles.titre}><strong style={{color:"#ffbf00"}}>Etat: </strong> 
+                  <p className={styles.titre}><span>Examen:</span> {passeExamen.examen?.intitule}</p>
+                  <p className={styles.titre}><span>Note:</span> {notes[passeExamen.examen.id] ?? 'Chargement...'}/{passeExamen.examen?.note_max}</p>
+                  <p className={styles.titre}><span>Etat: </span>
                     {passeExamen.etat.charAt(0).toUpperCase() + passeExamen.etat.slice(1).toLowerCase()}
                   </p>
                 </div>

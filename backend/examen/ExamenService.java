@@ -1,10 +1,10 @@
-package com.example.RegisterLogin.examen;
+package com.example.demo.examen;
 
 import org.springframework.stereotype.Service;
-import com.example.RegisterLogin.appuser.AppUser;
-import com.example.RegisterLogin.appuser.AppUserRepository;
-import com.example.RegisterLogin.question.Question;
-import com.example.RegisterLogin.question.QuestionRepository;
+import com.example.demo.appuser.AppUser;
+import com.example.demo.appuser.AppUserRepository;
+import com.example.demo.question.Question;
+import com.example.demo.question.QuestionRepository;
 
 import lombok.AllArgsConstructor;
 import java.util.List;

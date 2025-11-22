@@ -1,4 +1,4 @@
-package com.example.RegisterLogin.repond;
+package com.example.demo.repond;
 
 import java.io.IOException;
 import java.util.List;
@@ -7,15 +7,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.RegisterLogin.PasseExamen.PasseExamenService;
-import com.example.RegisterLogin.appuser.AppUser;
-import com.example.RegisterLogin.appuser.AppUserRepository;
-import com.example.RegisterLogin.piece.Piece;
-import com.example.RegisterLogin.piece.PieceRepository;
-import com.example.RegisterLogin.question.QuestionRepository;
-import com.example.RegisterLogin.question.QuestionType;
-import com.example.RegisterLogin.reponse.Reponse;
-import com.example.RegisterLogin.reponse.ReponseRepository;
+import com.example.demo.PasseExamen.PasseExamenService;
+import com.example.demo.appuser.AppUser;
+import com.example.demo.appuser.AppUserRepository;
+import com.example.demo.piece.Piece;
+import com.example.demo.piece.PieceRepository;
+import com.example.demo.question.QuestionRepository;
+import com.example.demo.question.QuestionType;
+import com.example.demo.reponse.Reponse;
+import com.example.demo.reponse.ReponseRepository;
 
 
 import lombok.AllArgsConstructor;

@@ -1,4 +1,4 @@
-package com.example.RegisterLogin.groupe;
+package com.example.demo.groupe;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

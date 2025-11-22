@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
-import axios from "../api";
+import axiosInstance from "../axiosInstance";
 
 function PageDeQuestion({ examId, onNext }) {
 
     const [questionIndex, setQuestionIndex] = useState(0);
     const [listeQuestions, setListeQuestions] = useState([]);
-    const [listeReponses, setListeReponses]= useState([]);
+    const [listeReponses, setListeReponses] = useState([]);
     const questionActuelle = listeQuestions[questionIndex];
 
     const [reponseTexte, setReponseTexte] = useState("");
@@ -18,7 +18,7 @@ function PageDeQuestion({ examId, onNext }) {
     useEffect(() => {
         fetch(`http://localhost:8080/api/v1/examens/9/questions`)
             .then((res) => res.json())
-            .then((data) => {setListeQuestions(data); console.log(data[0].temps)})
+            .then((data) => { setListeQuestions(data); console.log(data[0].temps) })
             .catch((err) => console.error("Erreur pendant le chargement:", err));
     }, []);
 
@@ -84,7 +84,7 @@ function PageDeQuestion({ examId, onNext }) {
                 .catch((err) => console.error("Erreur:", err));
         }
 
-        setQuestionIndex(questionIndex+=1);
+        setQuestionIndex(questionIndex += 1);
     };
 
     return (

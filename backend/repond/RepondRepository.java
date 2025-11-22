@@ -1,4 +1,4 @@
-package com.example.RegisterLogin.repond;
+package com.example.demo.repond;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import com.example.RegisterLogin.question.QuestionType;
+import com.example.demo.question.QuestionType;
 
 import jakarta.transaction.Transactional;
 

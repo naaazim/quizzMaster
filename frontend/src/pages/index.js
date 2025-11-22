@@ -13,4 +13,5 @@ export { default as Analyses } from './Analyses';
 export { default as Consultation } from './Consultation';
 export { default as CorrectionExamen } from './CorrectionExamen';
 export { default as PasseExamen } from './PasseExamen';
+export { default as OAuth2RedirectHandler } from './OAuth2RedirectHandler';
 export { default as NotFound } from './NotFound';

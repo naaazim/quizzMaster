@@ -1,4 +1,4 @@
-package com.example.RegisterLogin.appartientgroupe;
+package com.example.demo.appartientgroupe;
 
 import java.util.List;
 import java.util.Optional;

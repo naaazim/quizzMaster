@@ -1,4 +1,4 @@
-package com.example.RegisterLogin.piece;
+package com.example.demo.piece;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

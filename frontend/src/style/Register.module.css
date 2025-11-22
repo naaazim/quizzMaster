@@ -1,137 +1,205 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
-
-.bg{
-    width: 100%;
-    height: 100vh;
-    background-size: cover;
-    position: absolute;
-    z-index: 1;
-}
-
-.form-control{
-    width: 400px;
-    height: 50px;
-    border: solid 2px #ffb600;
-    border-radius: 20px;
-    margin-bottom: 10px;
-    margin-top: 5px;
-    font-family: "Montserrat" , sans-serif;
-    background-color: white;
-    padding-left: 15px;
-    text-align: center;
-    
-}
-.form-nom{
-    width: 190px;
-    height: 50px;
-    border: solid 2px #ffb600;
-    border-radius: 20px;
-    margin-bottom: 10px;
-    font-family: "Montserrat" , sans-serif;
-    background-color: white;
-    padding: 0 5px;
-    text-align: center;
-    
-}
-
-.form-group{
+.registerContainer {
     display: flex;
-    flex-direction: column;
-
-}
-
-
-
-.Nom{
-    display: flex;
-    flex-direction: row;
-    width: 400px;
-    margin-top: -15px;
-    justify-content: space-between;
-}
-input{
-    outline: none;
-}
-.Register{
-    position: relative;
-    z-index: 2;
-    width: 100vw;
-    height: 100vh;
-    margin: auto;
-    display: flex;
-    flex-direction: column;
+    align-items: center;
     justify-content: center;
-    align-items: center;
-    align-content: center;
-
+    min-height: calc(100vh - 80px);
+    /* Adjust for navbar height */
+    padding: 2rem;
 }
 
-.bt-connexion-register{
-    padding: 15px;
-    width: 180px;
-    text-align: center;
-    border-radius: 25px;
-    font-weight: bold;
-    font-family: "Montserrat", sans-serif ;
-    font-size: 13px;
-    color: white;
-    background-color: #ffb600 ;
-    border: none;
-    transition: all .5s;
-}
-
-.bt-inscription-register{
-    padding: 15px;
-    width: 180px;
-    text-align: center;
-    border-radius: 25px;
-    font-weight: bold;
-    font-family: "Montserrat", sans-serif ;
-    font-size: 13px;
-    color: white;
-    border: none;
-    background-color: #ff5100;
-    transition: all .5s;
-}
-.bt-connexion-register:hover, .bt-inscription-register:hover{
-    transform: scale(.95);
-}
-select{
-    width: auto;
-    padding: 10px;
-    border-radius: 20px;
-    height: 50px;
-    border: 2px solid #FEB201 ;
-    background-color: white;
-    text-align: center;
-    font-family: "Montserrat" , sans-serif;
-}
-
-.div-bt-register{
-    margin-top: 20px;
+.registerCard {
     width: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
+    max-width: 450px;
+    padding: 2.5rem;
+    animation: slideUp 0.5s ease-out;
 }
-@media screen and (max-width: 450px){
-    .form-nom{
-        width: 150px;
-        font-size: 13px;
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
     }
-    .form-control{
-        width: 330px;
-        font-size: 13px;
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
-    select{
-        width: 330px;
-    }
-    .Nom{
-        width: 330px;
-    }
-    .bt-connexion-register,.bt-inscription-register{
-        width: 160px;
-        font-size: 12px;
-    }
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.title {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.subtitle {
+    color: var(--text-muted);
+    font-size: 1rem;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.row {
+    display: flex;
+    gap: 1rem;
+}
+
+.formGroup {
+    flex: 1;
+}
+
+.label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    transition: all 0.2s;
+}
+
+.input:focus {
+    outline: none;
+    border-color: var(--primary);
+    background: rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0 0 3px var(--primary-glow);
+}
+
+.roleGroup {
+    margin-bottom: 0.5rem;
+}
+
+.roleSelector {
+    display: flex;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 4px;
+    border-radius: var(--radius-sm);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.roleBtn {
+    flex: 1;
+    padding: 0.6rem;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-weight: 500;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.roleBtn.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: var(--shadow-glow);
+}
+
+.submitBtn {
+    width: 100%;
+    padding: 0.875rem;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    font-size: 1rem;
+    margin-top: 0.5rem;
+    transition: all 0.2s;
+    box-shadow: var(--shadow-glow);
+}
+
+.submitBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px var(--primary-glow);
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    margin: 0.5rem 0;
+}
+
+.divider::before,
+.divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.divider span {
+    padding: 0 10px;
+}
+
+.googleBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    width: 100%;
+    padding: 0.875rem;
+    background: white;
+    color: #333;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: transform 0.2s;
+}
+
+.googleBtn:hover {
+    transform: translateY(-2px);
+}
+
+.googleIcon {
+    width: 20px;
+    height: 20px;
+}
+
+.loginLink {
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-top: 0.5rem;
+}
+
+.link {
+    color: var(--primary);
+    font-weight: 600;
+    margin-left: 0.5rem;
+}
+
+/* Active state for role buttons */
+.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: var(--shadow-glow);
+}
+
+.link:hover {
+    text-decoration: underline;
 }

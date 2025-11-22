@@ -1,4 +1,4 @@
-package com.example.RegisterLogin.question;
+package com.example.demo.question;
 
 public enum QuestionType {
     QCM,

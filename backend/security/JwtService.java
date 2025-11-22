@@ -1,4 +1,4 @@
-package com.example.RegisterLogin.security;
+package com.example.demo.security;
 
 import java.security.Key;
 import java.util.Date;
@@ -34,7 +34,7 @@ public class JwtService {
     public String generateToken( UserDetails userDetails){
         Map<String, Object> claims = new HashMap<>();
         claims.put("role", userDetails.getAuthorities());
-        claims.put("userId", userDetails.getUsername());
+        claims.put("email", userDetails.getUsername());
         return generateToken(claims, userDetails);
     }
 
@@ -51,6 +51,9 @@ public class JwtService {
 
     private Claims extractAllClaims(String token){
         return Jwts.parserBuilder().setSigningKey(getSignInKey()).build().parseClaimsJws(token).getBody();
+    }
+    public String extractUsername(String token) {
+        return extractClaim(token, Claims::getSubject);
     }
 
     private Key getSignInKey(){

@@ -1,88 +1,84 @@
-import "../style/style.css";
-import { useNavigate } from "react-router-dom";
+import { useState } from 'react';
+import { useNavigate, Link } from "react-router-dom";
+import styles from "../style/Navbar.module.css";
 
 function Navbar({ title }) {
   const navigate = useNavigate();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const userDataString = localStorage.getItem("user");
   const user = userDataString ? JSON.parse(userDataString) : null;
 
-  const deconnecter = () => {
+  const handleLogout = () => {
     localStorage.removeItem("user");
     localStorage.removeItem("jwt_token");
     navigate("/login");
   };
 
-  const initials =
-    user?.firstName?.[0]?.toUpperCase() + user?.lastName?.[0]?.toUpperCase();
+  const initials = user ? (user.firstName?.[0] + user.lastName?.[0]).toUpperCase() : "";
+  const isExaminateurOrAdmin = user?.appUserRole === "EXAMINATEUR" || user?.appUserRole === "ADMIN";
+  const isAdmin = user?.appUserRole === "ADMIN";
+
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   return (
-    <div className="maNavbar">
-      <div className="navGauche">
-        {(user?.appUserRole === "EXAMINATEUR" || user?.appUserRole === "ADMIN") && (
-          <>
-            <div id="menuToggle">
-              <input type="checkbox" id="menuCheckbox" />
+    <nav className={styles.navbar}>
+      <div className={styles.logoContainer}>
+        {isExaminateurOrAdmin && (
+          <div className={styles.menuContainer}>
+            <button
+              className={`${styles.menuToggle} ${isMenuOpen ? styles.open : ''}`}
+              onClick={toggleMenu}
+              aria-label="Menu"
+            >
+              <span></span>
+              <span></span>
+              <span></span>
+            </button>
 
-              <span id="bar1"></span>
-              <span id="bar2"></span>
-              <span id="bar3"></span>
-
-              <ul id="menu">
-                <li>
-                  <label htmlFor="menuCheckbox">
-                    <a href="/dashboard-examinateur">Tableau de bord</a>
-                  </label>
-                </li>
-                <li>
-                  <label htmlFor="menuCheckbox">
-                    <a href="/gestion-groupes">Gestion des groupes</a>
-                  </label>
-                </li>
-                <li>
-                  <label htmlFor="menuCheckbox">
-                    <a href="/gestion-examens">Gestion des examens</a>
-                  </label>
-                </li>
-                <li>
-                  <label htmlFor="menuCheckbox">
-                    <a href="/ajouter-passe-examen">Gestion des passages</a>
-                  </label>
-                </li>
-                <li>
-                  <label htmlFor="menuCheckbox">
-                    <a href="/analyses">Analyses</a>
-                  </label>
-                </li>
-                {user?.appUserRole === "ADMIN"&&(<><li>
-                  <label htmlFor="menuCheckbox">
-                    <a href="/gestion-roles">Gestion des roles</a>
-                  </label>
-                </li></>)}
-              </ul>
+            <div className={`${styles.menuDropdown} ${isMenuOpen ? styles.open : ''}`}>
+              <Link to="/dashboard-examinateur" className={styles.menuItem} onClick={() => setIsMenuOpen(false)}>Tableau de bord</Link>
+              <Link to="/gestion-groupes" className={styles.menuItem} onClick={() => setIsMenuOpen(false)}>Gestion des groupes</Link>
+              <Link to="/gestion-examens" className={styles.menuItem} onClick={() => setIsMenuOpen(false)}>Gestion des examens</Link>
+              <Link to="/ajouter-passe-examen" className={styles.menuItem} onClick={() => setIsMenuOpen(false)}>Gestion des passages</Link>
+              <Link to="/analyses" className={styles.menuItem} onClick={() => setIsMenuOpen(false)}>Analyses</Link>
+              {isAdmin && (
+                <Link to="/gestion-roles" className={styles.menuItem} onClick={() => setIsMenuOpen(false)}>Gestion des rôles</Link>
+              )}
             </div>
-          </>
+          </div>
         )}
-        <div >
-        <img
-          src="/LOGO.png"
-          width="120"
-          className="image"
-          onClick={() => navigate("/")}
-        />
-        </div>
+
+        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <img src="/LOGO.png" alt="QuizzMaster Logo" className={styles.logo} />
+          <span className={styles.logoText}>Quizz<span className={styles.logoHighlight}>Master</span></span>
+        </Link>
       </div>
 
-      <div className="titre">
-        <p>{title}</p>
+      <div className={styles.navLinks}>
+        {title && <h2 className={styles.navTitle}>{title}</h2>}
       </div>
 
-      <div className="profil">
-        <p>{initials}</p>
-        <button onClick={deconnecter}>Déconnexion</button>
+      <div className={styles.userSection}>
+        {user ? (
+          <>
+            <div className={styles.avatar} title={`${user.firstName} ${user.lastName}`}>
+              {initials}
+            </div>
+            <button className={styles.logoutBtn} onClick={handleLogout}>
+              Déconnexion
+            </button>
+          </>
+        ) : (
+          <div className={styles.navLinks}>
+            <Link to="/login" className={styles.navLink}>Connexion</Link>
+            <Link to="/signup" className={styles.btnPrimary}>Inscription</Link>
+          </div>
+        )}
       </div>
-    </div>
+    </nav>
   );
 }
 
 export default Navbar;
+

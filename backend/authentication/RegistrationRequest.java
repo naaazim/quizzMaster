@@ -1,6 +1,6 @@
-package com.example.RegisterLogin.authentication;
+package com.example.demo.authentication;
 
-import com.example.RegisterLogin.appuser.AppUserRole;
+import com.example.demo.appuser.AppUserRole;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

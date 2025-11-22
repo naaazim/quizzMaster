@@ -1,4 +1,4 @@
-package com.example.RegisterLogin.reponse;
+package com.example.demo.reponse;
 import java.util.List;
 
 import org.springframework.security.access.prepost.PreAuthorize;

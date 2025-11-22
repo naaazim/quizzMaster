@@ -1,15 +1,15 @@
-package com.example.RegisterLogin.appartientgroupe;
+package com.example.demo.appartientgroupe;
 
 import java.util.List;
 import java.util.Vector;
 
 import org.springframework.stereotype.Service;
 
-import com.example.RegisterLogin.appuser.AppUser;
-import com.example.RegisterLogin.appuser.AppUserRepository;
-import com.example.RegisterLogin.appuser.AppUserRole;
-import com.example.RegisterLogin.groupe.Groupe;
-import com.example.RegisterLogin.groupe.GroupeRepository;
+import com.example.demo.appuser.AppUser;
+import com.example.demo.appuser.AppUserRepository;
+import com.example.demo.appuser.AppUserRole;
+import com.example.demo.groupe.Groupe;
+import com.example.demo.groupe.GroupeRepository;
 
 import lombok.AllArgsConstructor;
 

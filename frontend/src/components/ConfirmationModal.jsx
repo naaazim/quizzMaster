@@ -1,18 +1,24 @@
 import React from "react";
 import styles from "../style/ConfirmationModal.module.css";
+import Modal from "./Modal";
 
-// Composant qui permet d'afficher une pop-up demandant a l'utilisitaur une confirmation avant d'effectuer une action
 const ConfirmationModal = ({ message, onConfirm, onCancel }) => {
+  const footer = (
+    <>
+      <button className={styles.cancel} onClick={onCancel}>Annuler</button>
+      <button className={styles.confirm} onClick={onConfirm}>Confirmer</button>
+    </>
+  );
+
   return (
-    <div className={styles.overlay}>
-      <div className={styles.modal}>
-        <p>{message}</p>
-        <div className={styles.buttons}>
-          <button className={styles.cancel} onClick={onCancel}>Annuler</button>
-          <button className={styles.confirm} onClick={onConfirm}>Confirmer</button>
-        </div>
-      </div>
-    </div>
+    <Modal
+      isOpen={true}
+      onClose={onCancel}
+      title="Confirmation"
+      footer={footer}
+    >
+      <p className={styles.message}>{message}</p>
+    </Modal>
   );
 };
 

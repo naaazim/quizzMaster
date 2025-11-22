@@ -1,6 +1,6 @@
-package com.example.RegisterLogin.confirmationtoken;
+package com.example.demo.confirmationtoken;
 
-import com.example.RegisterLogin.appuser.AppUser;
+import com.example.demo.appuser.AppUser;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

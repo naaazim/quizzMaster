@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import  { useEffect, useState } from 'react';
 import styles from "../style/home.module.css"; // Importation du module CSS
-import axios from "../api"; // Axios est utilisé ici à la place de fetch
+import axiosInstance from "../axiosInstance"; // Axios est utilisé ici à la place de fetch
 import { useNavigate } from 'react-router-dom'; // Pour rediriger l'utilisateur
 
 const ListExamens = () => {
@@ -36,7 +36,7 @@ const ListExamens = () => {
   //Axios est utilisé ici pour l'appel API (plus propre et plus simple que fetch)
   useEffect(() => {
     if (userId) {
-      axios.get(`http://localhost:8080/api/v1/passe-examen/passe-examen-by-user/${userId}`)
+      axiosInstance.get(`http://localhost:8080/api/v1/passe-examen/passe-examen-by-user/${userId}`)
         .then(response => {
           setExamens(response.data); // On récupère directement les données
         })
@@ -74,7 +74,7 @@ const ListExamens = () => {
                     {passeExamen.etat.charAt(0).toUpperCase() + passeExamen.etat.slice(1).toLowerCase()}
                   </span></p>
                 </div>
-                <button 
+                <button
                   className={styles.consulter}
                   onClick={() => handleConsulterClick(passeExamen.examen.id)} // Redirection avec paramètres
                 >

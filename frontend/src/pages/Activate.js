@@ -1,33 +1,33 @@
-import {  useEffect, useState } from "react";
-import 'bootstrap/dist/css/bootstrap.min.css';
-import axios from "../api";
-import { useNavigate,useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+
+import axiosInstance from "../axiosInstance";
+import { useNavigate, useLocation } from "react-router-dom";
 
 function Activate() {
-    const navigate = useNavigate();
-    const location = useLocation();
-    const queryParams = new URLSearchParams(location.search);
-    const search = queryParams.get("token");
+  const navigate = useNavigate();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const search = queryParams.get("token");
 
-    useEffect(()=>{
-      async function active () {
-        try {
-          const response =await axios.get(`/api/v1/auth/confirm?token=${search}`);
-          navigate("/login")
-        } catch (err) {
-          
-        }
-        return;
+  useEffect(() => {
+    async function active() {
+      try {
+        const response = await axiosInstance.get(`/api/v1/auth/confirm?token=${search}`);
+        navigate("/login")
+      } catch (err) {
+
       }
-      active();
-    },[]);
+      return;
+    }
+    active();
+  }, []);
 
-  
-    return (
-        <>
+
+  return (
+    <>
 
     </>
-    );
-  }
-  
-  export default Activate;
+  );
+}
+
+export default Activate;

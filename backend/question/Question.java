@@ -1,9 +1,9 @@
-package com.example.RegisterLogin.question;
+package com.example.demo.question;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import com.example.RegisterLogin.examen.Examen;
+import com.example.demo.examen.Examen;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

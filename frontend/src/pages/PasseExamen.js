@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from '../api';
+import axiosInstance from '../axiosInstance';
 import Navbar from "../components/Navbar.js";
 
 function PasseExamen() {
@@ -41,7 +41,7 @@ function PasseExamen() {
 
   useEffect(() => {
     if (!userId) return;
-    axios.get(`/api/v1/examens/${examenId}/questions`)
+    axiosInstance.get(`/api/v1/examens/${examenId}/questions`)
       .then(response => {
         setQuestions(response.data);
         const initialReponses = response.data.map(q => ({
@@ -63,14 +63,14 @@ function PasseExamen() {
     if (questions.length > 0 && currentQuestionIndex < questions.length && userId) {
       const currentQuestion = questions[currentQuestionIndex];
       if (currentQuestion.type === 'QCU' || currentQuestion.type === 'QCM') {
-        axios.get(`/api/v1/question/${currentQuestion.id}/options`)
+        axiosInstance.get(`/api/v1/question/${currentQuestion.id}/options`)
           .then(response => {
             setOptions(prev => ({
               ...prev,
               [currentQuestion.id]: response.data
             }
-          ));
-          console.log(response.data);
+            ));
+            console.log(response.data);
           })
           .catch(error => {
             console.error("Erreur lors de la récupération des options :", error);
@@ -134,7 +134,7 @@ function PasseExamen() {
 
         if (question.type === 'PIECE') {
           if (userResponse.file) {
-            const reponseFictive = await axios.get(`/api/v1/question/${question.id}/options`);
+            const reponseFictive = await axiosInstance.get(`/api/v1/question/${question.id}/options`);
             const formData = new FormData();
             formData.append("file", userResponse.file);
             formData.append("request", new Blob([JSON.stringify({
@@ -143,7 +143,7 @@ function PasseExamen() {
               reponseId: reponseFictive.data[0].id
             })], { type: "application/json" }));
 
-            await axios.post('/api/v1/repond/create-piece', formData, {
+            await axiosInstance.post('/api/v1/repond/create-piece', formData, {
               headers: { "Content-Type": "multipart/form-data" }
             });
           }
@@ -151,8 +151,8 @@ function PasseExamen() {
         }
 
         if (question.type === 'LIBRE') {
-          const reponseFictive = await axios.get(`/api/v1/question/${question.id}/options`);
-          await axios.post('/api/v1/repond', {
+          const reponseFictive = await axiosInstance.get(`/api/v1/question/${question.id}/options`);
+          await axiosInstance.post('/api/v1/repond', {
             texte: userResponse.texte || '',
             userId: userId,
             reponseId: reponseFictive.data[0].id
@@ -161,7 +161,7 @@ function PasseExamen() {
           const questionOptions = options[question.id] || [];
           for (const reponseId of userResponse.reponseIds || []) {
             const selectedOption = questionOptions.find(opt => opt.id === reponseId);
-            await axios.post('/api/v1/repond', {
+            await axiosInstance.post('/api/v1/repond', {
               texte: selectedOption?.texte || '',
               userId: userId,
               reponseId
@@ -170,7 +170,7 @@ function PasseExamen() {
         }
       }
 
-      await axios.post(`/api/v1/passe-examen/finir/${examenId}`);
+      await axiosInstance.post(`/api/v1/passe-examen/finir/${examenId}`);
       navigate(`/dashboard-examine`);
 
     } catch (error) {

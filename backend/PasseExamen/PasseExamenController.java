@@ -1,4 +1,4 @@
-package com.example.RegisterLogin.PasseExamen;
+package com.example.demo.PasseExamen;
 
 
 import lombok.RequiredArgsConstructor;
@@ -9,9 +9,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.List;
 
-import com.example.RegisterLogin.appuser.AppUser;
-import com.example.RegisterLogin.appuser.AppUserRepository;
-import com.example.RegisterLogin.repond.Repond;
+import com.example.demo.appuser.AppUser;
+import com.example.demo.appuser.AppUserRepository;
+import com.example.demo.repond.Repond;
 
 
 

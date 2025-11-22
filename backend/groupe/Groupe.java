@@ -1,6 +1,6 @@
-package com.example.RegisterLogin.groupe;
+package com.example.demo.groupe;
 
-import com.example.RegisterLogin.appuser.AppUser;
+import com.example.demo.appuser.AppUser;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

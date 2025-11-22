@@ -1,4 +1,4 @@
-package com.example.RegisterLogin.reponse;
+package com.example.demo.reponse;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -6,8 +6,8 @@ import lombok.AllArgsConstructor;
 
 import org.springframework.stereotype.Service;
 
-import com.example.RegisterLogin.question.Question;
-import com.example.RegisterLogin.question.QuestionRepository;
+import com.example.demo.question.Question;
+import com.example.demo.question.QuestionRepository;
 
 import java.util.List;
 

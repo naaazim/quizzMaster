@@ -1,4 +1,4 @@
-package com.example.RegisterLogin.appuser;
+package com.example.demo.appuser;
 
 public enum AppUserRole {
     EXAMINE,

@@ -1,11 +1,11 @@
-package com.example.RegisterLogin.PasseExamen;
+package com.example.demo.PasseExamen;
 
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import com.example.RegisterLogin.appuser.AppUser;
-import com.example.RegisterLogin.examen.Examen;
+import com.example.demo.appuser.AppUser;
+import com.example.demo.examen.Examen;
 import jakarta.persistence.*;
 import lombok.*;
 

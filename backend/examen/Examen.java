@@ -1,5 +1,5 @@
-package com.example.RegisterLogin.examen;
-import com.example.RegisterLogin.appuser.AppUser;
+package com.example.demo.examen;
+import com.example.demo.appuser.AppUser;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

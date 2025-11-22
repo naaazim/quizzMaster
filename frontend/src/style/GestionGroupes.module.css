@@ -1,0 +1,136 @@
+/* Gestion Groupes - Glassmorphism Design */
+
+.pageContainer {
+    min-height: calc(100vh - 80px);
+    padding: 2rem 5%;
+}
+
+.actionBar {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    background: var(--surface);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+}
+
+.groupSelector {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex: 1;
+    min-width: 300px;
+}
+
+.label {
+    color: var(--text-primary);
+    font-size: 1.25rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.select {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+.select:focus {
+    outline: none;
+    border-color: var(--primary);
+    background: rgba(0, 0, 0, 0.4);
+    box-shadow: 0 0 0 3px var(--primary-glow);
+}
+
+.select option {
+    background: var(--background);
+    color: var(--text-primary);
+}
+
+.addButton {
+    padding: 0.75rem 1.5rem;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: var(--shadow-glow);
+    white-space: nowrap;
+}
+
+.addButton:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px var(--primary-glow);
+}
+
+.listsContainer {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.finishButton {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    padding: 1rem 2rem;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: var(--shadow-glow);
+    z-index: 100;
+}
+
+.finishButton:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 30px var(--primary-glow);
+}
+
+@media (max-width: 768px) {
+    .pageContainer {
+        padding: 1.5rem 3%;
+    }
+
+    .actionBar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .groupSelector {
+        flex-direction: column;
+        align-items: stretch;
+        min-width: auto;
+    }
+
+    .addButton {
+        width: 100%;
+    }
+
+    .listsContainer {
+        flex-direction: column;
+    }
+
+    .finishButton {
+        position: static;
+        width: 100%;
+        margin-top: 2rem;
+    }
+}

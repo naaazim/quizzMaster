@@ -1,7 +1,7 @@
-package com.example.RegisterLogin.questiondans;
+package com.example.demo.questiondans;
 
-import com.example.RegisterLogin.examen.Examen;
-import com.example.RegisterLogin.question.Question;
+import com.example.demo.examen.Examen;
+import com.example.demo.question.Question;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

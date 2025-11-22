@@ -1,4 +1,4 @@
-package com.example.RegisterLogin.reponse;
+package com.example.demo.reponse;
 
 import java.util.List;
 import java.util.Set;
@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import com.example.RegisterLogin.question.Question;
+import com.example.demo.question.Question;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

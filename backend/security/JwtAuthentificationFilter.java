@@ -1,4 +1,4 @@
-package com.example.RegisterLogin.security;
+package com.example.demo.security;
 
 import java.io.IOException;
 
@@ -22,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class JwtAuthentificationFilter extends OncePerRequestFilter {
 
-    private final JwtService jwtService;
+    private final com.example.demo.security.JwtService jwtService;
     private final UserDetailsService userDetailsService;
 
     @Override

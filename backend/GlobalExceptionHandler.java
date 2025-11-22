@@ -1,4 +1,4 @@
-package com.example.RegisterLogin;
+package com.example.demo;
 
 
 import org.springframework.http.HttpStatus;

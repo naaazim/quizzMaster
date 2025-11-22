@@ -1,9 +1,9 @@
-import Navbar from "../components/Navbar"; 
+import Navbar from "../components/Navbar";
 import styles from "../style/CorrectionExamen.module.css";
 import { useEffect, useState } from "react";
-import axios from "../api";
+import axiosInstance from "../axiosInstance";
 import PopUp from "../components/popUp"; // Changé de popUp à PopUp
-import { useParams,useLocation } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 
 function CorrectionExamen() {
     const { examineId, examenId } = useParams();
@@ -14,15 +14,15 @@ function CorrectionExamen() {
     const [loading, setLoading] = useState(true);
     const [examenInfo, setExamenInfo] = useState('');
     const [examineInfo, setExamineInfo] = useState('');
-    const [popup, setPopup] = useState({message: "", etat: ""});
+    const [popup, setPopup] = useState({ message: "", etat: "" });
     useEffect(() => {
         if (examineId && examenId) {
             const endpoint =
-            mode === "update"
-              ? `/api/v1/repond/get-by-exam-user/${examenId}/${examineId}`
-              : `/api/v1/repond/getReponsesACorriger/${examineId}/${examenId}`;
-          
-            axios.get(endpoint)
+                mode === "update"
+                    ? `/api/v1/repond/get-by-exam-user/${examenId}/${examineId}`
+                    : `/api/v1/repond/getReponsesACorriger/${examineId}/${examenId}`;
+
+            axiosInstance.get(endpoint)
                 .then(response => {
                     setReponsesACorriger(response.data);
 
@@ -58,31 +58,31 @@ function CorrectionExamen() {
     };
 
     const soumettreCorrection = (reponseId, questionId) => {
-      if(corrections[reponseId]<=reponsesACorriger.find(u=> u.id==reponseId).reponse.question.nbPoints && corrections[reponseId]>=0){
-        axios.put(`/api/v1/repond/corriger`, {
-          userId: examineId,
-          questionId,
-          note: corrections[reponseId]
-      })
-      .then(() => {
-            setPopup({message: "Correction enregistrée", etat: "success"});
-            setTimeout(()=>{
-                refreshPage();
-            },2000);
-        })
-        .catch(error => {
-            console.error("Erreur lors de l'enregistrement :", error);
-            setPopup({message: "Erreur lors de l'enregistrement", etat: "failure"})
-        });
-    }
-    else{
-          setPopup({message: "La note doit être conforme", etat: "failure"})
-      }
+        if (corrections[reponseId] <= reponsesACorriger.find(u => u.id == reponseId).reponse.question.nbPoints && corrections[reponseId] >= 0) {
+            axiosInstance.put(`/api/v1/repond/corriger`, {
+                userId: examineId,
+                questionId,
+                note: corrections[reponseId]
+            })
+                .then(() => {
+                    setPopup({ message: "Correction enregistrée", etat: "success" });
+                    setTimeout(() => {
+                        refreshPage();
+                    }, 2000);
+                })
+                .catch(error => {
+                    console.error("Erreur lors de l'enregistrement :", error);
+                    setPopup({ message: "Erreur lors de l'enregistrement", etat: "failure" })
+                });
+        }
+        else {
+            setPopup({ message: "La note doit être conforme", etat: "failure" })
+        }
     };
 
     const downloadPieceJointe = async (pieceId) => {
         try {
-            const response = await axios.get(`/api/v1/repond/get-piece/${pieceId}`, {
+            const response = await axiosInstance.get(`/api/v1/repond/get-piece/${pieceId}`, {
                 responseType: 'blob'
             });
 
@@ -103,7 +103,7 @@ function CorrectionExamen() {
     if (loading) {
         return (
             <>
-                <Navbar title={"CORRECTION DES EXAMENS"}/>
+                <Navbar title={"CORRECTION DES EXAMENS"} />
                 <div className={styles.p}>Chargement...</div>
             </>
         );
@@ -112,7 +112,7 @@ function CorrectionExamen() {
     if (!reponsesACorriger || reponsesACorriger.length === 0) {
         return (
             <>
-                <Navbar title={"CORRECTION DES EXAMENS"}/>
+                <Navbar title={"CORRECTION DES EXAMENS"} />
                 <div className={styles.p}>Aucune réponse à corriger</div>
             </>
         );
@@ -121,21 +121,21 @@ function CorrectionExamen() {
     return (
         <>
             {popup.message && <PopUp message={popup.message} etat={popup.etat} />} {/* Changé de popUp à PopUp */}
-            <Navbar title={"CORRECTION DES EXAMENS"}/>
+            <Navbar title={"CORRECTION DES EXAMENS"} />
             <div className={styles.examensACorriger}>
                 <div className={styles.examenContainer}>
                     <div className={styles.menuDeroulant}>
-                        <strong>Examen :</strong> {examenInfo} - 
+                        <strong>Examen :</strong> {examenInfo} -
                         <strong> Examiné :</strong> {examineInfo}
                     </div>
-                    
+
                     <div className={styles.reponsesContainer}>
                         {reponsesACorriger.map((response, idx) => (
                             <div key={idx} className={styles.divReponse}>
                                 <div>
-                                    <p><strong style={{color:"#ffb600"}}>Question :</strong> {response.reponse?.question?.texte || "Question avec PJ"}</p>
-                                    <p style={{width:"70%"}}>
-                                        <strong style={{color:"#ffb600"}}>Réponse :</strong>
+                                    <p><strong style={{ color: "#ffb600" }}>Question :</strong> {response.reponse?.question?.texte || "Question avec PJ"}</p>
+                                    <p style={{ width: "70%" }}>
+                                        <strong style={{ color: "#ffb600" }}>Réponse :</strong>
                                         {response.piece ? (
                                             <button onClick={() => downloadPieceJointe(response.piece.id)}>
                                                 Télécharger la pièce jointe
@@ -145,18 +145,18 @@ function CorrectionExamen() {
                                         )}
                                     </p>
                                 </div>
-                                {(response.reponse.question.type!="QCM" && response.reponse.question.type!="QCU")&&( <div className={styles.divCorrection}>
+                                {(response.reponse.question.type != "QCM" && response.reponse.question.type != "QCU") && (<div className={styles.divCorrection}>
                                     <div className={styles.correctionContainer}>
                                         <label className={styles.maCheckbox}>Note : </label>
                                         <input
-                                        value={corrections[response.id]}
-                                            style={{height:"25px", width:"50px", cursor:"pointer"}}
+                                            value={corrections[response.id]}
+                                            style={{ height: "25px", width: "50px", cursor: "pointer" }}
                                             type="number"
-                                            onChange={(e) => handleNoteChange(response.id,e.target.value)}
+                                            onChange={(e) => handleNoteChange(response.id, e.target.value)}
                                         />
                                     </div>
                                     <div className={styles.divSoumettre}>
-                                        <button 
+                                        <button
                                             onClick={() => soumettreCorrection(
                                                 response.id,
                                                 response.reponse?.question?.id || 0
@@ -167,7 +167,7 @@ function CorrectionExamen() {
                                         </button>
                                     </div>
                                 </div>)}
-                               
+
                             </div>
                         ))}
                     </div>

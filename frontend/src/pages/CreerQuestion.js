@@ -1,43 +1,44 @@
 
-import {useState} from "react";
-import axios from "../api";
+import { useState } from "react";
+import axiosInstance from "../axiosInstance";
 import { useNavigate } from "react-router-dom";
 
-function CreerQuestion({examenId}) {
+function CreerQuestion({ examenId }) {
     //Variables
     const [type, setType] = useState("QCM"); //variable pour l'aff. des opt. de rép
     const [nbPoints, setNbPoints] = useState(0);
-    const[melange, setMelange] = useState(false); //melange ?
-    const[texte, setTexte] = useState(""); //var. pour le texte de la qu.
-    const[options, setOptions] = useState([]); //opt. de rép.
-    const[nbOptions, setNbOptions] = useState(""); //nb d'opt. de rép.
+    const [melange, setMelange] = useState(false); //melange ?
+    const [texte, setTexte] = useState(""); //var. pour le texte de la qu.
+    const [options, setOptions] = useState([]); //opt. de rép.
+    const [nbOptions, setNbOptions] = useState(""); //nb d'opt. de rép.
     const naviguer = useNavigate();
 
 
-    async function saveQuestion(event){
+    async function saveQuestion(event) {
         event.preventDefault();
-        const question = await axios.post("/api/v1/question/create", {type : type,
+        const question = await axiosInstance.post("/api/v1/question/create", {
+            type: type,
             texte: texte,
             nbPoints: nbPoints,
             examenId: examenId
         });
 
-        if(type === "QCM" || type === "QCU"){
-        options.forEach((reponse)=>{
-            axios.post("/api/v1/question/create-reponse", {
-                texte: reponse.texte,
-                valeur: reponse.valeur,
+        if (type === "QCM" || type === "QCU") {
+            options.forEach((reponse) => {
+                axiosInstance.post("/api/v1/question/create-reponse", {
+                    texte: reponse.texte,
+                    valeur: reponse.valeur,
+                    questionId: question.data.id
+                });
+
+            });
+        } else {
+            axiosInstance.post("/api/v1/question/create-reponse", {
+                texte: "",
+                valeur: false,
                 questionId: question.data.id
             });
-        
-        });
-    }else{
-        axios.post("/api/v1/question/create-reponse", {
-            texte: "",
-            valeur:false,
-            questionId: question.data.id
-        });
-    }
+        }
 
     }
 
@@ -61,8 +62,8 @@ function CreerQuestion({examenId}) {
     const handleNbOptionsChange = (e) => {
         setNbOptions(e.target.value);
 
-        if(Number(e.target.value) > 0){
-            setOptions(Array.from({ length: Number(e.target.value) }, () => ({ texte: "", valeur: false})));
+        if (Number(e.target.value) > 0) {
+            setOptions(Array.from({ length: Number(e.target.value) }, () => ({ texte: "", valeur: false })));
         } else {
             setOptions([]);
         }
@@ -86,11 +87,11 @@ function CreerQuestion({examenId}) {
     //m.a.j des options lorsque c'est une pj
     const handleFileChange = (e) => {
         const fich = e.target.files[0];
-        if(fich){
-            const nvOption = {id : Date.now(), element : fich};
+        if (fich) {
+            const nvOption = { id: Date.now(), element: fich };
             setOptions([nvOption]);
         }
-        else{
+        else {
             setOptions([]);
         }
     }
@@ -114,21 +115,21 @@ function CreerQuestion({examenId}) {
     return (
         <div className="creerQuestion">
             {/*---------- déb. du form. ----------*/}
-            <form onSubmit = {saveQuestion} className="form">
+            <form onSubmit={saveQuestion} className="form">
                 <div className="ligne1">
                     <label>
                         Type :
-                        <select value = {type} onChange={handleTypeChange}>
-                            <option value = "QCM">QCM</option>
-                            <option value = "QCU">QCU</option>
-                            <option value = "PIECE">Pièce jointe</option>
-                            <option value = "LIBRE">Texte</option>
+                        <select value={type} onChange={handleTypeChange}>
+                            <option value="QCM">QCM</option>
+                            <option value="QCU">QCU</option>
+                            <option value="PIECE">Pièce jointe</option>
+                            <option value="LIBRE">Texte</option>
                         </select>
                     </label>
 
                     <label>
                         Nombre de points :
-                        <input type="number" value = {nbPoints} onChange={handleNbPointsChange}/>
+                        <input type="number" value={nbPoints} onChange={handleNbPointsChange} />
                     </label>
 
                     <label>
@@ -140,42 +141,42 @@ function CreerQuestion({examenId}) {
                 <div className="ligne2">
                     <label>
                         Texte :
-                        <input type = "text" value = {texte} onChange={handleTexteChange}/>
+                        <input type="text" value={texte} onChange={handleTexteChange} />
                     </label>
                 </div>
                 {(type === "QCM" || type === "QCU") && (
-                    <div className = "ligne3">
+                    <div className="ligne3">
                         <label>
                             Nombre d'options :
-                            <input type = "number" value = {nbOptions} onChange = {handleNbOptionsChange} min = "1" />
+                            <input type="number" value={nbOptions} onChange={handleNbOptionsChange} min="1" />
                         </label>
 
                         <hr className="separator" />
 
                         {options.map((option, i) => (
-                            <div key = {i} className="option">
+                            <div key={i} className="option">
                                 <div className="optiontexte">
                                     <label>
                                         Option {i + 1} :
-                                        <input type = "text" value = {option.texte} onChange = {(e) => handleOptionTexteChange(i, e.target.value)} />
+                                        <input type="text" value={option.texte} onChange={(e) => handleOptionTexteChange(i, e.target.value)} />
                                     </label>
                                 </div>
                                 <div className="optioncheck">
-                                <label htmlFor={`checkbox-${i}`}>
-                                Bonne réponse ?
-                                <input
-                                    id={`checkbox-${i}`}
-                                    type="checkbox"
-                                    className="checkbox-bonne-reponse" 
-                                    onChange={(e) => handleOptionCorrecteChange(i, e.target.checked)}
-                                />
-                                </label>
+                                    <label htmlFor={`checkbox-${i}`}>
+                                        Bonne réponse ?
+                                        <input
+                                            id={`checkbox-${i}`}
+                                            type="checkbox"
+                                            className="checkbox-bonne-reponse"
+                                            onChange={(e) => handleOptionCorrecteChange(i, e.target.checked)}
+                                        />
+                                    </label>
                                 </div>
                             </div>
                         ))}
                     </div>
                 )}
-                <div className = "bouton">
+                <div className="bouton">
                     <button type="submit">Valider</button>
                 </div>
             </form>

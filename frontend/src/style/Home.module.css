@@ -1,0 +1,323 @@
+/* Home.module.css */
+
+/* Hero Section */
+.heroSection {
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10%;
+    position: relative;
+    overflow: hidden;
+    background: radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.1) 0%, transparent 40%);
+}
+
+.heroContent {
+    max-width: 50%;
+    z-index: 2;
+}
+
+.heroTitle {
+    font-size: 4rem;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    font-weight: 800;
+}
+
+.heroSubtitle {
+    font-size: 1.2rem;
+    color: var(--text-muted);
+    margin-bottom: 2.5rem;
+    line-height: 1.6;
+}
+
+.ctaButtons {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.btnPrimary {
+    padding: 1rem 2rem;
+    background: var(--primary);
+    color: white;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    box-shadow: var(--shadow-glow);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btnPrimary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 30px var(--primary-glow);
+}
+
+.btnSecondary {
+    padding: 1rem 2rem;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    transition: background 0.2s;
+}
+
+.btnSecondary:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* Hero Visual (Code Block) */
+.heroVisual {
+    position: relative;
+    width: 45%;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.codeBlock {
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-md);
+    padding: 2rem;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    transform: rotate(-5deg);
+    animation: float 6s ease-in-out infinite;
+    z-index: 2;
+}
+
+.codeHeader {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 1.5rem;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.dot:nth-child(1) {
+    background: #ff5f56;
+}
+
+.dot:nth-child(2) {
+    background: #ffbd2e;
+}
+
+.dot:nth-child(3) {
+    background: #27c93f;
+}
+
+pre {
+    font-family: 'Fira Code', monospace;
+    font-size: 1rem;
+    color: #a9b7c6;
+}
+
+.keyword {
+    color: #cc7832;
+    font-weight: bold;
+}
+
+.function {
+    color: #ffc66d;
+}
+
+.string {
+    color: #6a8759;
+}
+
+.glowOrb {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    background: var(--primary);
+    filter: blur(100px);
+    opacity: 0.3;
+    z-index: 1;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: rotate(-5deg) translateY(0);
+    }
+
+    50% {
+        transform: rotate(-5deg) translateY(-20px);
+    }
+}
+
+/* Features Section */
+.featuresSection {
+    padding: 5rem 10%;
+    background: var(--background);
+}
+
+.sectionHeader {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.sectionTitle {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.sectionSubtitle {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+}
+
+.featuresGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.featureCard {
+    padding: 2.5rem;
+    transition: transform 0.3s;
+}
+
+.featureCard:hover {
+    transform: translateY(-5px);
+    background: var(--surface-hover);
+}
+
+.featureIcon {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.featureTitle {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.featureDescription {
+    color: var(--text-muted);
+    line-height: 1.6;
+}
+
+/* Steps Section */
+.stepsSection {
+    padding: 5rem 10%;
+    text-align: center;
+}
+
+.stepsGrid {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 4rem;
+}
+
+.stepItem {
+    flex: 1;
+    max-width: 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.stepNumber {
+    width: 50px;
+    height: 50px;
+    background: var(--surface);
+    border: 1px solid var(--primary);
+    color: var(--primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 0 15px var(--primary-glow);
+}
+
+.connector {
+    flex: 1;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.1);
+    margin-top: 25px;
+}
+
+.stepTitle {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.stepDescription {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+/* CTA Section */
+.ctaSection {
+    padding: 5rem 10%;
+}
+
+.ctaCard {
+    text-align: center;
+    padding: 4rem;
+    background: linear-gradient(135deg, var(--surface) 0%, rgba(99, 102, 241, 0.1) 100%);
+}
+
+.ctaTitle {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.ctaText {
+    color: var(--text-muted);
+    margin-bottom: 2.5rem;
+    font-size: 1.1rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .heroSection {
+        flex-direction: column;
+        text-align: center;
+        padding-top: 6rem;
+    }
+
+    .heroContent {
+        max-width: 100%;
+        margin-bottom: 3rem;
+    }
+
+    .heroTitle {
+        font-size: 2.5rem;
+    }
+
+    .ctaButtons {
+        justify-content: center;
+    }
+
+    .heroVisual {
+        width: 100%;
+    }
+
+    .stepsGrid {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .connector {
+        display: none;
+    }
+}

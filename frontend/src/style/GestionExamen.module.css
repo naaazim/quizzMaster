@@ -1,119 +1,154 @@
+/* Gestion Examens - Glassmorphism Design */
+
 .gestion-examens-container {
-    padding: 40px;
+  padding: 2.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.examens-header {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.examen-card {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  align-items: center;
+  background: var(--surface);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  transition: all 0.3s ease;
+  color: var(--text-primary);
+}
+
+.examen-card:hover {
+  background: var(--surface-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.examen-card span {
+  color: var(--text-primary);
+}
+
+.examen-card-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+}
+
+.bt-supprimer {
+  padding: 0.625rem 1.25rem;
+  background: var(--error);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.bt-supprimer:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(231, 76, 60, 0.4);
+}
+
+.bt-modifier {
+  padding: 0.625rem 1.25rem;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: var(--shadow-glow);
+}
+
+.bt-modifier:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 20px var(--primary-glow);
+}
+
+.examens-actions {
+  margin-top: 2rem;
+  display: flex;
+  gap: 1rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.bt-ajouter {
+  padding: 0.875rem 1.75rem;
+  background: var(--primary);
+  color: white;
+  border-radius: var(--radius-sm);
+  border: none;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: var(--shadow-glow);
+}
+
+.bt-ajouter:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 20px var(--primary-glow);
+}
+
+.bt-terminer {
+  padding: 0.875rem 1.75rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: transparent;
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.bt-terminer:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--primary);
+}
+
+@media (max-width: 768px) {
+  .gestion-examens-container {
+    padding: 1.5rem;
   }
-  
-  .examens-header {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr;
-    font-weight: bold;
-    margin-bottom: 10px;
-    border-bottom: 2px solid #ccc;
-    padding-bottom: 10px;
-  }
-  
+
+  .examens-header,
   .examen-card {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr;
-    align-items: center;
-    background-color: #f0f4ff;
-    border-radius: 10px;
-    padding: 12px;
-    margin-bottom: 10px;
+    grid-template-columns: 1fr;
+    gap: 1rem;
   }
-  
-  .bt-supprimer {
-    margin-right: 10px;
-    background-color: #dc2626;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    padding: 6px 12px;
+
+  .examen-card-actions {
+    justify-content: flex-start;
   }
-  
-  .bt-modifier {
-    background-color: #2563eb;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    padding: 6px 12px;
-  }
-  
+
   .examens-actions {
-    margin-top: 30px;
+    flex-direction: column;
   }
-  
-  .bt-ajouter {
-    margin-right: 10px;
-    padding: 10px 20px;
-    background-color: #10b981;
-    color: white;
-    border-radius: 8px;
-    border: none;
-    font-weight: bold;
-  }
-  
+
+  .bt-ajouter,
   .bt-terminer {
-    padding: 10px 20px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    background-color: #f9fafb;
-    font-weight: bold;
-  }
-
-  .modal {
-    position: fixed;
-    top: 20%;
-    left: 35%;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    padding: 20px;
-    z-index: 1000;
-    width: 30%;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  }
-  
-  .form-group {
-    margin-bottom: 20px;
-  }
-  
-  .form-group input {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #cbd5e1;
-    border-radius: 6px;
-    height: 40px;
-    font-size: 16px;
-    box-sizing: border-box;
-    transition: border-color 0.2s ease-in-out;
   }
-  
-  .form-group input:focus {
-    outline: none;
-    border-color: #2563eb;
-    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
-  }
-  
-  .modal-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-  }
-  
-  .bt-annuler {
-    padding: 8px 16px;
-    background-color: #e5e7eb;
-    color: #111827;
-    border-radius: 6px;
-    border: none;
-  }
-  
-  .bt-valider {
-    padding: 8px 16px;
-    background-color: #1e3a8a;
-    color: white;
-    border-radius: 6px;
-    border: none;
-  }
-
-  
+}

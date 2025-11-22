@@ -1,4 +1,4 @@
-package com.example.RegisterLogin.examen;
+package com.example.demo.examen;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

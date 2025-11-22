@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from "../api";
+import axiosInstance from "../axiosInstance";
 import styles from '../style/listExamen.module.css';
 
 const ListExamensACorriger = ({ examinateurId }) => {
@@ -14,7 +14,7 @@ const ListExamensACorriger = ({ examinateurId }) => {
     // Récupération des examens à corriger pour l'examinateur
     const fetchExamens = async () => {
       try {
-        const response = await axios.get(`/api/v1/passe-examen/examen-a-corriger/${examinateurId}`);
+        const response = await axiosInstance.get(`/api/v1/passe-examen/examen-a-corriger/${examinateurId}`);
         setExamens(response.data);
       } catch (error) {
         console.error("Erreur lors de la récupération des examens corrigés :", error);
@@ -22,7 +22,7 @@ const ListExamensACorriger = ({ examinateurId }) => {
     };
 
     fetchExamens();
-  }, [examinateurId]); 
+  }, [examinateurId]);
 
   const toggle = () => {
     setIsOpen(!isOpen); // Affiche ou cache la liste
@@ -47,25 +47,25 @@ const ListExamensACorriger = ({ examinateurId }) => {
               <div key={passeExamen.id} className={styles.examCard}>
                 <div className={styles.examInfo}>
                   {/* Affiche les informations de l'examen et de l'étudiant */}
-                  <p><span style={{color:"#ffb600"}}> Intitulé:</span> {
+                  <p><span> Intitulé:</span> {
                     passeExamen.examen?.intitule &&
-                    passeExamen.examen.intitule.charAt(0).toUpperCase() + 
+                    passeExamen.examen.intitule.charAt(0).toUpperCase() +
                     passeExamen.examen.intitule.slice(1).toLowerCase()
                   }</p>
-                  <p><span style={{color:"#ffb600"}}> Nom:</span> {
+                  <p><span style={{ color: "#ffb600" }}> Nom:</span> {
                     passeExamen.appUser?.firstName &&
-                    passeExamen.appUser.firstName.charAt(0).toUpperCase() + 
+                    passeExamen.appUser.firstName.charAt(0).toUpperCase() +
                     passeExamen.appUser.firstName.slice(1).toLowerCase()
                   }</p>
-                  <p><span style={{color:"#ffb600"}}> Prénom:</span> {
+                  <p><span style={{ color: "#ffb600" }}> Prénom:</span> {
                     passeExamen.appUser?.lastName &&
-                    passeExamen.appUser.lastName.charAt(0).toUpperCase() + 
+                    passeExamen.appUser.lastName.charAt(0).toUpperCase() +
                     passeExamen.appUser.lastName.slice(1).toLowerCase()
                   }</p>
                 </div>
 
-                <button 
-                  className={styles.correctButton} 
+                <button
+                  className={styles.correctButton}
                   onClick={() => handleCorrection(passeExamen)}
                 >
                   Corriger

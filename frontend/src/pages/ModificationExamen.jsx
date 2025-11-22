@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import axios from "../api";
-import Navbar from "../components/Navbar";
+import axiosInstance from "../axiosInstance";
+import Layout from "../components/Layout";
 import QuestionCard from "../components/QuestionCard";
 import CreerQuestionModal from "../components/CreerQuestionModal";
 import styles from "../style/ModificationExamen.module.css";
@@ -20,7 +20,7 @@ function ModifierExamen() {
     intitule: "",
     noteSur: 20,
     questions: [],
-    createurId:0,
+    createurId: 0,
   });
 
   const [isModalOpen, setIsModalOpen] = useState(false);// Gère l'ouverture/fermeture de la modale
@@ -29,14 +29,14 @@ function ModifierExamen() {
   useEffect(() => {
     const chargerExamen = async () => {
       try {
-        const resExamen = await axios.get(`/api/v1/examens/${examenId}`);
+        const resExamen = await axiosInstance.get(`/api/v1/examens/${examenId}`);
         console.log(resExamen);
-        const resQuestions = await axios.get(`/api/v1/examens/${examenId}/questions`);
+        const resQuestions = await axiosInstance.get(`/api/v1/examens/${examenId}/questions`);
 
         setExamData({
           intitule: resExamen.data.intitule || "",
           noteSur: resExamen.data.note_max || 20,
-          createurId : resExamen.data.createur.id,
+          createurId: resExamen.data.createur.id,
           questions: Array.isArray(resQuestions.data) ? resQuestions.data : [],
         });
       } catch (err) {
@@ -56,11 +56,11 @@ function ModifierExamen() {
     }));
   };
 
-   // Fonction pour supprimer une question
-   const confirmerSuppression = async () => {
+  // Fonction pour supprimer une question
+  const confirmerSuppression = async () => {
     if (questionToDelete !== null) {
       try {
-        await axios.delete(`/api/v1/question/delete/${questionToDelete}`);
+        await axiosInstance.delete(`/api/v1/question/delete/${questionToDelete}`);
         await refreshQuestions(); // Recharge la liste
         setShowConfirmModal(false); // Ferme la modale
         setQuestionToDelete(null);  // Réinitialise l'ID
@@ -77,17 +77,19 @@ function ModifierExamen() {
   };
 
   const modifier = async () => {
-    try{
-      
-        if(examData.intitule!=""){await axios.post(`/api/v1/examens/modifier`,
-        {
-          id:examenId,
-          intitule: examData.intitule,
-          note_max: examData.noteSur,
-          createurId : examData.createurId
-        }
-      );}
-    }catch{
+    try {
+
+      if (examData.intitule != "") {
+        await axiosInstance.post(`/api/v1/examens/modifier`,
+          {
+            id: examenId,
+            intitule: examData.intitule,
+            note_max: examData.noteSur,
+            createurId: examData.createurId
+          }
+        );
+      }
+    } catch {
 
     }
   }
@@ -95,7 +97,7 @@ function ModifierExamen() {
   // Recharge les questions de l’examen
   const refreshQuestions = async () => {
     try {
-      const res = await axios.get(`/api/v1/examens/${examenId}/questions`);
+      const res = await axiosInstance.get(`/api/v1/examens/${examenId}/questions`);
       setExamData((prev) => ({
         ...prev,
         questions: Array.isArray(res.data) ? res.data : [],
@@ -112,15 +114,11 @@ function ModifierExamen() {
   };
 
   return (
-    <div>
-      <div style={{paddingLeft:"50px"}}>
-        <Navbar title={"MODIFIER UN EXAMEN"}/>
-      </div>
-
+    <Layout title="MODIFIER UN EXAMEN">
       <div className={styles.container}>
         <label className={styles.intitule}>Intitulé:</label>
         <input
-        required
+          required
           type="text"
           name="intitule"
           value={examData.intitule}
@@ -129,7 +127,7 @@ function ModifierExamen() {
 
         <label className={styles.note}>Note sur :</label>
         <input
-        required
+          required
           type="number"
           name="noteSur"
           value={examData.noteSur}
@@ -155,7 +153,7 @@ function ModifierExamen() {
         <button className={styles["bt-newquestion"]} onClick={() => setIsModalOpen(true)}>
           Nouvelle Question
         </button>
-        <button className={styles["bt-terminer"]} onClick={async() =>{try {await modifier(); navigate("/gestion-examens")}catch(err){}}}>
+        <button className={styles["bt-terminer"]} onClick={async () => { try { await modifier(); navigate("/gestion-examens") } catch (err) { } }}>
           Terminer
         </button>
       </div>
@@ -179,7 +177,7 @@ function ModifierExamen() {
           onCancel={annulerSuppression}
         />
       )}
-    </div>
+    </Layout>
   );
 }
 

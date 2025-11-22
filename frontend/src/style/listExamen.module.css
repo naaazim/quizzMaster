@@ -1,109 +1,195 @@
-.listExamens{
-  padding: 0 20px;
-}
-.examensPasses, .examensAPasser{
-    display: flex;
-    justify-content: space-between;
-    font-family: "Monserrat",sans-serif;
-    font-size: 22px;
-    border-bottom: solid 1px #000;
-    margin-top: 20px;
-    cursor: pointer;
-}
-.flex{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-.examenItems{
-    display: flex;
-    width: 70%;
-    justify-content: space-between;
-    background-color: #213b74;
-    box-shadow: 2px 2px 10px #000;
-    margin: 20px 0;
-    padding: 50px 20px;
-    color: #fff;
-    border-radius: 50px;
-    flex-wrap: wrap;
-}
-.bouton{
-    width: 170px;
-    color: #213b74;
-    border: solid 2px #213b74;
-    background: transparent;
-    padding: 10px 0;
-    border-radius: 20px;
-    box-shadow: 2px 2px 10px #213b74;
-    transition: all .5s;
-}
-.bouton:hover{
-    background-color: #213b74;
-    color: #fff;
+/* List Examens - Glassmorphism Style */
+
+.listExamens {
+  padding: 2rem 0;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-@media screen and (max-width: 680px){
-    .flex{
-        flex-direction: column;
-        align-items: end;
-    }
-    .examenItems{
-        width: 100%;
-    }
-}
 .examHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 0;
-    font-size: 18px;
-    font-weight: bold;
-    font-family: Arial, Helvetica, sans-serif;
-    border-bottom: solid 1px #000;
-    cursor: pointer;
-    margin-bottom: 20px;
-  }
-  .examInfo{
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 70%;
-    background-color: #1d3d6e;
-    padding: 50px 20px;
-    border-radius: 40px;
-  }
-  
-  .examCard{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
+  background: var(--surface);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-bottom: 1.5rem;
+}
 
+.examHeader:hover {
+  background: var(--surface-hover);
+}
+
+.examHeader p {
+  margin: 0;
+  font-size: 1.5rem;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.examContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.examCard {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  background: var(--surface);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.examCard:hover {
+  background: var(--surface-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.examInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.examInfo p {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+}
+
+.examInfo span {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.correctButton,
+.bouton {
+  padding: 0.75rem 1.5rem;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-family: var(--font-body);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-glow);
+  white-space: nowrap;
+}
+
+.correctButton:hover,
+.bouton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 30px var(--primary-glow);
+}
+
+/* Empty State */
+.examContainer p:only-child {
+  text-align: center;
+  color: var(--text-muted);
+  padding: 2rem;
+  font-size: 1rem;
+}
+
+/* Legacy Support */
+.examensPasses,
+.examensAPasser {
+  background: var(--surface);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-bottom: 1.5rem;
+}
+
+.examensPasses:hover,
+.examensAPasser:hover {
+  background: var(--surface-hover);
+}
+
+.examensPasses p,
+.examensAPasser p {
+  margin: 0;
+  font-size: 1.5rem;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.examenItems {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  background: var(--surface);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  margin: 1rem 0;
+}
+
+.examenItems:hover {
+  background: var(--surface-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* Responsive */
+@media screen and (max-width: 768px) {
+  .listExamens {
+    padding: 1.5rem 0;
   }
-  .correctButton{
-    padding: 7px 50px;
-    color: #1d3d6e;
-    border: solid 2px #1d3d6e;
-    background-color: #fff;
-    border-radius: 15px;
-    transition: all .6s;
+
+  .examHeader p,
+  .examensPasses p,
+  .examensAPasser p {
+    font-size: 1.25rem;
   }
-  .correctButton:hover{
-    color: #fff;
-    background-color: #1d3d6e;
+
+  .examCard,
+  .examenItems {
+    flex-direction: column;
+    align-items: stretch;
   }
-  @media screen and (max-width: 630px){
-    .examInfo{
-      width: 100%;
-      flex-wrap: wrap;
-    }
-    .examCard{
-      flex-direction: column;
-      align-items: end;
-      gap: 20px;
-    }
-    .correctButton{
-      margin-right: 5px;
-    }
+
+  .correctButton,
+  .bouton {
+    width: 100%;
   }
+
+  .flex {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

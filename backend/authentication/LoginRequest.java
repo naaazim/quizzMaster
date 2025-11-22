@@ -1,4 +1,4 @@
-package com.example.RegisterLogin.authentication;
+package com.example.demo.authentication;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

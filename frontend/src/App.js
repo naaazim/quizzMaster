@@ -22,6 +22,7 @@ function App() {
       <Route path="/analyses" element={<Pages.Analyses />} />
       <Route path="/corriger-examen/:examineId/:examenId" element={<Pages.CorrectionExamen />} />
       <Route path="/consultation" element={<Pages.Consultation />} />
+      <Route path="/oauth2/redirect" element={<Pages.OAuth2RedirectHandler />} />
       <Route path="*" element={<Pages.NotFound />} />
       </Routes>
     </Router>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Navbar from "../components/Navbar";
+import Layout from "../components/Layout";
 import ListExamensACorriger from "../components/ListExamensACorriger";
 import Actions from "../components/Actions";
 import ListExamensCorriges from "../components/ListExamensCorrige";
@@ -24,18 +24,11 @@ const DBExaminateur = () => {
   }, [navigate]);
 
   return (
-    <div>
-      <div style={{paddingLeft:"50px"}}>
-        <Navbar title={"TABLEAU DE BORD EXAMINATEUR"} />
-      </div>
-      <div className='bgImage'></div>
+    <Layout title="TABLEAU DE BORD EXAMINATEUR">
       <Actions />
-      <div style={{ width: "95%", margin: "auto" }}>
-        {/* Liste des examens à corriger pour cet examinateur */}
-        <ListExamensACorriger examinateurId={examinateurId} />
-        <ListExamensCorriges examinateurId={examinateurId}/>
-      </div>
-    </div>
+      <ListExamensACorriger examinateurId={examinateurId} />
+      <ListExamensCorriges examinateurId={examinateurId} />
+    </Layout>
   );
 };
 

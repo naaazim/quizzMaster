@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import axios from "../api";
+import { useEffect, useState } from "react";
+import axiosInstance from "../axiosInstance";
 import styles from "../style/ModificationExamen.module.css";
 
 
@@ -11,7 +11,7 @@ const QuestionCard = ({ question, onEdit, onDelete }) => {
   useEffect(() => {
     const fetchReponses = async () => {
       try {
-        const res = await axios.get(
+        const res = await axiosInstance.get(
           `/api/v1/question/${question.id}/reponses`  // Requête HTTP pour récupérer les réponses associées à la question via son ID
         );
         setReponses(res.data || []); // Stockage des réponses dans l'état local

@@ -1,12 +1,12 @@
-package com.example.RegisterLogin.repond;
+package com.example.demo.repond;
 
 
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.RegisterLogin.piece.Piece;
-import com.example.RegisterLogin.piece.PieceRepository;
+import com.example.demo.piece.Piece;
+import com.example.demo.piece.PieceRepository;
 
 import lombok.RequiredArgsConstructor;
 

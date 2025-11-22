@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import axios from "../api";
+import axiosInstance from "../axiosInstance";
 import CreerExamenModal from "../components/CreerExamenModal";
-import Navbar from "../components/Navbar";
+import Layout from "../components/Layout";
 import { useNavigate } from "react-router-dom";
 import styles from "../style/GestionExamen.module.css";
 import ConfirmationModal from "../components/ConfirmationModal";
@@ -17,16 +17,16 @@ const GestionExamens = () => {
   const fetchExamens = async () => {
     try {
       const userId = JSON.parse(localStorage.getItem("user")).id;
-      const user=JSON.parse(localStorage.getItem("user"));
-      let res = await axios.get(`/api/v1/examens/by-createur`, {
+      const user = JSON.parse(localStorage.getItem("user"));
+      let res = await axiosInstance.get(`/api/v1/examens/by-createur`, {
         params: {
           createurId: userId,
         },
       });
-      if(user.appUserRole=="ADMIN"){
-       res = await axios.get(`/api/v1/examens/get-all`);
+      if (user.appUserRole == "ADMIN") {
+        res = await axiosInstance.get(`/api/v1/examens/get-all`);
 
-    }
+      }
       setExamens(res.data);
     } catch (error) {
       console.error("Erreur lors de la récupération des examens :", error);
@@ -36,7 +36,7 @@ const GestionExamens = () => {
   // Fonction pour supprimer un examen
   const deleteExamen = async (id) => {
     try {
-      await axios.delete(`/api/v1/examens/${id}`);
+      await axiosInstance.delete(`/api/v1/examens/${id}`);
       fetchExamens();
     } catch (error) {
       console.error("Erreur lors de la suppression :", error);
@@ -48,7 +48,7 @@ const GestionExamens = () => {
     setExamToDelete(id);
     setShowConfirmModal(true);
   };
-  
+
   // Fonction qui va gerer le cas ou l'utilisateur va confirmer la suppresion
   const handleDeleteConfirmed = () => {
     if (examToDelete !== null) {
@@ -70,10 +70,7 @@ const GestionExamens = () => {
   }, []);
 
   return (
-    <>
-      <div style={{paddingLeft:"50px"}}>
-          <Navbar title={"GESTION DES EXAMENS"}/>
-        </div>
+    <Layout title="GESTION DES EXAMENS">
       <div className={styles["gestion-examens-container"]}>
         <div className={styles["examens-header"]}>
           <span>Intitulé</span>
@@ -129,7 +126,7 @@ const GestionExamens = () => {
           />
         )}
       </div>
-    </>
+    </Layout>
   );
 };
 

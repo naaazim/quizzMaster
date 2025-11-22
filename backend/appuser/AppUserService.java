@@ -1,4 +1,4 @@
-package com.example.RegisterLogin.appuser;
+package com.example.demo.appuser;
 
 import lombok.AllArgsConstructor;
 
@@ -68,4 +68,9 @@ public class AppUserService implements UserDetailsService {
     public List<AppUser> getExaminateurAValider(){
         return appUserRepository.getUsersToValidate(AppUserRole.EXAMINATEUR);
     }
+    public AppUser getByEmail(String email) {
+        return appUserRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Utilisateur introuvable"));
+    }
+
 }

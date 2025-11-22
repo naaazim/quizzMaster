@@ -1,10 +1,10 @@
-package com.example.RegisterLogin.appartientgroupe;
+package com.example.demo.appartientgroupe;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import com.example.RegisterLogin.appuser.AppUser;
-import com.example.RegisterLogin.groupe.Groupe;
+import com.example.demo.appuser.AppUser;
+import com.example.demo.groupe.Groupe;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

@@ -1,5 +1,5 @@
 import styles from "../style/popUp.module.css";
-import React, {useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 function PopUp({ message, etat }) {
     const [visible, setVisible] = useState(true);
 
@@ -7,7 +7,7 @@ function PopUp({ message, etat }) {
         const timer = setTimeout(() => {
             setVisible(false);
         }, 2000);
-        
+
         return () => clearTimeout(timer);
     }, []);
 
@@ -15,7 +15,7 @@ function PopUp({ message, etat }) {
 
     return (
         <div className={etat === "success" ? styles.success : styles.failure}>
-            <img src={etat === "success" ? "/succes.png" : "/fail.png"} 
+            <img src={etat === "success" ? "/succes.png" : "/fail.png"}
                 alt={etat === "success" ? "Succés" : "Echec"}
                 width={"50"}
                 className={styles.image}

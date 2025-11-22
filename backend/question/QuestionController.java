@@ -1,14 +1,14 @@
-package com.example.RegisterLogin.question;
+package com.example.demo.question;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.RegisterLogin.PasseExamen.PasseExamen;
-import com.example.RegisterLogin.PasseExamen.PasseExamenEtat;
-import com.example.RegisterLogin.PasseExamen.PasseExamenRepository;
-import com.example.RegisterLogin.appuser.AppUserRepository;
-import com.example.RegisterLogin.reponse.Reponse;
-import com.example.RegisterLogin.reponse.ReponseRequest;
-import com.example.RegisterLogin.reponse.ReponseService;
+import com.example.demo.PasseExamen.PasseExamen;
+import com.example.demo.PasseExamen.PasseExamenEtat;
+import com.example.demo.PasseExamen.PasseExamenRepository;
+import com.example.demo.appuser.AppUserRepository;
+import com.example.demo.reponse.Reponse;
+import com.example.demo.reponse.ReponseRequest;
+import com.example.demo.reponse.ReponseService;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;

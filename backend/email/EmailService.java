@@ -1,4 +1,4 @@
-package com.example.RegisterLogin.email;
+package com.example.demo.email;
 
 import lombok.AllArgsConstructor;
 

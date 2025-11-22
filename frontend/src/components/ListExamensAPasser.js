@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import axios from "../api";
+import { useEffect, useState } from 'react';
+import axiosInstance from "../axiosInstance";
 import styles from "../style/listExamen.module.css"
 import { useNavigate } from 'react-router-dom';
 
@@ -13,7 +13,7 @@ const ExamensAPasser = ({ userId }) => {
     if (!userId) return;
     const fetchExamens = async () => {
       try {
-        const response = await axios.get(`/api/v1/passe-examen/examen-a-passer/${userId}`);
+        const response = await axiosInstance.get(`/api/v1/passe-examen/examen-a-passer/${userId}`);
         setExamens(response.data);
       } catch (error) {
         console.error("Erreur lors de la récupération des examens corrigés :", error);
@@ -38,23 +38,24 @@ const ExamensAPasser = ({ userId }) => {
             examens.map((passeExamen) => (
               <div key={passeExamen.id} className={styles.flex}>
                 <div className={styles.examenItems}>
-                  <p><strong style={{color:"#ffbf00"}}>Examen:</strong> {passeExamen.examen?.intitule}</p>
-                  <p><strong style={{color:"#ffbf00"}}>Note Maximale:</strong> {passeExamen.examen?.note_max}</p>
+                  <p><span>Examen:</span> {passeExamen.examen?.intitule}</p>
+                  <p><span>Note Maximale:</span> {passeExamen.examen?.note_max}</p>
                 </div>
                 {/* Bouton Commencer pour chaque examen */}
                 <button
                   className={styles.bouton}
                   onClick={() => {
-    
-                    navigate(`/passe-examen/${passeExamen.examen.id}`);}
-                 }
+
+                    navigate(`/passe-examen/${passeExamen.examen.id}`);
+                  }
+                  }
                 >
                   Commencer
                 </button>
               </div>
             ))
           ) : (
-            <p style={{marginTop:"20px"}}>Aucun examen à passer</p>
+            <p>Aucun examen à passer</p>
           )}
         </div>
       )}

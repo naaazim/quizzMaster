@@ -1,10 +1,10 @@
-package com.example.RegisterLogin.repond;
+package com.example.demo.repond;
 
 import org.hibernate.annotations.*;
 
-import com.example.RegisterLogin.appuser.AppUser;
-import com.example.RegisterLogin.piece.Piece;
-import com.example.RegisterLogin.reponse.Reponse;
+import com.example.demo.appuser.AppUser;
+import com.example.demo.piece.Piece;
+import com.example.demo.reponse.Reponse;
 
 import jakarta.persistence.*;
 import lombok.*;

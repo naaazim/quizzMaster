@@ -1,94 +1,135 @@
-import {  useState } from "react";
-import axios from "axios";
+import { useState } from "react";
+import axiosInstance from "../axiosInstance";
 import styles from '../style/login.module.css';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import Layout from "../components/Layout";
 
 function Login() {
-    const navigate = useNavigate();
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [error, setError] = useState(false);
-    const [message, setMessage] = useState("");
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(false);
+  const [message, setMessage] = useState("");
 
-    async function handleSubmit(event) {
-        event.preventDefault();
-        try {
-          const response = await axios.post("/api/v1/auth/login", {
-            email: email,
-            password: password,
-          });
-    
-          localStorage.setItem("jwt_token", response.data.token);
-          localStorage.setItem("user", JSON.stringify(response.data.appUser));
-    
-          
-          
-            if(response.data.appUser.appUserRole=="EXAMINE"){
-              navigate("/dashboard-examine");
-            }else if(response.data.appUser.appUserRole=="EXAMINATEUR" || response.data.appUser.appUserRole=="ADMIN"){
-              navigate("/dashboard-examinateur");
-            }
-        } catch (err) {
-          setMessage(err.response.data);
-          setError(true);
-        }
+  async function handleSubmit(event) {
+    event.preventDefault();
+    try {
+      const response = await axiosInstance.post("/api/v1/auth/login", {
+        email: email,
+        password: password,
+      });
+
+      localStorage.setItem("jwt_token", response.data.token);
+      localStorage.setItem("user", JSON.stringify(response.data.appUser));
+
+      if (response.data.appUser.appUserRole === "EXAMINE") {
+        navigate("/dashboard-examine");
+      } else if (
+        response.data.appUser.appUserRole === "EXAMINATEUR" ||
+        response.data.appUser.appUserRole === "ADMIN"
+      ) {
+        navigate("/dashboard-examinateur");
       }
-
-    const handlemdpoublie= async()=>{
-      try {
-        const response = await axios.post(`/api/v1/auth/mdp-oublie/${email}`);
-        setMessage("Verifiez vos E-mail.")
-        setError(true);
-      } catch (err) {
-        setMessage(err.response.data);
-        setError(true);
-      }
-    };
-
-  
-    return (<div className={styles.login}>
-    <img src="LOGO.png" width="120" alt="Logo"/>
-    {error&&(<p className="font-20 text-danger montserrat">{message}</p>)}
-    <form onSubmit={handleSubmit} className={styles.formulaire}>
-      <div>
-        <label htmlFor="mail">E-mail :</label><br />
-        <input 
-          id="mail"
-          type="email" 
-          className={styles.formControl} 
-          placeholder="Entrez votre adresse mail"
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
-          required
-          autoFocus
-        />
-      </div>
-
-      <div>
-        <label htmlFor="mdp">Mot de passe :</label><br />
-        <input 
-          id="mdp"
-          type="password" 
-          className={styles.formControl} 
-          placeholder="Entrez votre mot de passe"
-          value={password}
-          onChange={(event) => setPassword(event.target.value)}
-          required
-        />
-      </div>
-
-      <p className={styles.labelMdpOublie}>Mot de passe oublié ?</p>
-      <a href="#" className={styles.cliquezIci} onClick={(e) => { e.preventDefault(); handlemdpoublie(); }}>Cliquez-ici</a><br />
-
-      <button type="submit" className={styles.loginConnexion}>Connexion</button><br />
-
-      <label htmlFor="connexion" className={styles.premInscription}>Première inscription ? </label><br />
-      <button type="button" id="connexion" className={styles.sInscrire} onClick={() => navigate("/Signup")}>Inscription</button>
-
-      {error && <div className={styles.errorMessage} style={{marginTop: '10px'}}>{error}</div>}
-    </form>
-  </div>
-    );
+    } catch (err) {
+      setMessage(err.response?.data || "Erreur de connexion");
+      setError(true);
+    }
   }
-  
-  export default Login;
+
+  const handlemdpoublie = async () => {
+    if (!email) {
+      setMessage("Veuillez entrer votre email d'abord.");
+      setError(true);
+      return;
+    }
+    try {
+      await axiosInstance.post(`/api/v1/auth/mdp-oublie/${email}`);
+      setMessage("Vérifiez vos emails.");
+      setError(true);
+    } catch (err) {
+      setMessage(err.response?.data || "Erreur lors de la demande");
+      setError(true);
+    }
+  };
+
+  return (
+    <Layout>
+      <div className={styles.loginContainer}>
+        <div className={`glass-panel ${styles.loginCard}`}>
+          <div className={styles.header}>
+            <h1 className={styles.title}>Welcome Back</h1>
+            <p className={styles.subtitle}>Sign in to your account</p>
+          </div>
+
+          {error && <div className={styles.errorMessage}>{message}</div>}
+
+          <form onSubmit={handleSubmit} className={styles.form}>
+            <div className={styles.formGroup}>
+              <label htmlFor="email" className={styles.label}>Email Address</label>
+              <input
+                id="email"
+                type="email"
+                className={styles.input}
+                placeholder="john@example.com"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                required
+                autoFocus
+              />
+            </div>
+
+            <div className={styles.formGroup}>
+              <label htmlFor="password" className={styles.label}>Password</label>
+              <input
+                id="password"
+                type="password"
+                className={styles.input}
+                placeholder="••••••••"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                required
+              />
+            </div>
+
+            <div className={styles.forgotPassword}>
+              <button
+                type="button"
+                className={styles.link}
+                onClick={handlemdpoublie}
+              >
+                Forgot password?
+              </button>
+            </div>
+
+            <button type="submit" className={styles.submitBtn}>
+              Sign In
+            </button>
+
+            <div className={styles.divider}>
+              <span>OR</span>
+            </div>
+
+            <a
+              href="http://localhost:8080/oauth2/authorization/google"
+              className={styles.googleBtn}
+            >
+              <img
+                src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+                alt="Google"
+                className={styles.googleIcon}
+              />
+              Continue with Google
+            </a>
+
+            <div className={styles.registerLink}>
+              Don't have an account? <Link to="/Signup" className={styles.linkText}>Sign up</Link>
+            </div>
+          </form>
+        </div>
+      </div>
+    </Layout>
+  );
+}
+
+export default Login;
+

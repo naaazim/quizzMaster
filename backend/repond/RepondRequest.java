@@ -1,4 +1,4 @@
-package com.example.RegisterLogin.repond;
+package com.example.demo.repond;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

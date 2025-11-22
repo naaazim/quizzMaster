@@ -1,4 +1,3 @@
-import React from "react";
 import Navbar from "../components/Navbar";
 import ListExamensCorriges from "../components/ListExamensCorrige";
 import { useNavigate } from "react-router-dom";
@@ -7,13 +6,13 @@ import { useNavigate } from "react-router-dom";
 const ModifierCorrection = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   const examinateurId = user?.id;
-  const navigate=useNavigate();
+  const navigate = useNavigate();
 
   return (
     <div>
-      <Navbar/>
+      <Navbar />
       <ListExamensCorriges examinateurId={examinateurId} />
-      <button onClick={()=>navigate("/dashboard-examinateur")} >Retour</button>
+      <button onClick={() => navigate("/dashboard-examinateur")} >Retour</button>
     </div>
   );
 };

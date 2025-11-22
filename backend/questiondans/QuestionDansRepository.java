@@ -1,4 +1,4 @@
-package com.example.RegisterLogin.questiondans;
+package com.example.demo.questiondans;
 
 import java.util.List;
 
@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.example.RegisterLogin.question.Question;
+import com.example.demo.question.Question;
 
 @Repository
 public interface QuestionDansRepository extends JpaRepository<QuestionDans,Long>{

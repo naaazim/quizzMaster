@@ -1,4 +1,4 @@
-package com.example.RegisterLogin.PasseExamen;
+package com.example.demo.PasseExamen;
 
 
 import org.springframework.data.jpa.repository.JpaRepository;

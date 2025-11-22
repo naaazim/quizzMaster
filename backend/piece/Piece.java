@@ -1,4 +1,4 @@
-package com.example.RegisterLogin.piece;
+package com.example.demo.piece;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -12,7 +12,7 @@ public class Piece {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String pieceNom; // Nom du fichier
-    private String pieceType; // Type du fichier (par exemple, "pdf" ou "docx")
+    private String pieceType; // Type du fichier (par example, "pdf" ou "docx")
     @Lob
     @Basic(fetch = FetchType.EAGER)
     private byte[] pieceContenu; // Contenu du fichier sous forme de tableau d'octets

@@ -1,4 +1,4 @@
-package com.example.RegisterLogin.question;
+package com.example.demo.question;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

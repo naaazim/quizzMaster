@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import axios from "../api";
+import { useState, useEffect } from "react";
+import axiosInstance from "../api";
 import styles from "../style/CreerQuestionModal.module.css";
 
 
@@ -26,7 +26,7 @@ const CreerQuestionModal = ({ examenId, onClose, onQuestionCreated, questionToEd
       setTemps(questionToEdit.temps);
 
       // Récupère les réponses existantes de la question à modifier
-      axios
+      axiosInstance
         .get(`/api/v1/question/${questionToEdit.id}/reponses`)
         .then((res) => setReponses(res.data))
         .catch((err) => {
@@ -67,61 +67,61 @@ const CreerQuestionModal = ({ examenId, onClose, onQuestionCreated, questionToEd
       examenId,
     };
 
-  // Validation pour le cas ou on essaye de créer un QCM ou QCU avec une seule réponse
-  if ((type === "QCM" || type === "QCU") && reponses.length < 2) {
-    setError("Impossible de créer un QCM/QCU avec une seule réponse");
-    return;
-  }
-
-  // Validation spécifique pour QCM : au moins une bonne réponse
-  if (type === "QCM") {
-    const bonnesReponses = reponses.filter((r) => r.valeur === true);
-    if (bonnesReponses.length === 0) {
-      setError("Un QCM doit avoir au moins une bonne réponse.");
+    // Validation pour le cas ou on essaye de créer un QCM ou QCU avec une seule réponse
+    if ((type === "QCM" || type === "QCU") && reponses.length < 2) {
+      setError("Impossible de créer un QCM/QCU avec une seule réponse");
       return;
     }
-  }
-  
-  // Validation pour QCU : Obligatoirement une seule réponse
-  if (type === "QCU") {
-    const bonnesReponses = reponses.filter((r) => r.valeur === true);
-    if (bonnesReponses.length === 0) {
-      setError("Un QCU doit avoir une bonne réponse.");
-      return;
-    } else if (bonnesReponses.length > 1) {
-      setError("Un QCU ne peut avoir qu'une seule bonne réponse.");
-      return;
-    }
-  }
 
-  try {
-    setError(""); // on efface l'erreur si la validation passe
-    let questionId = null;
+    // Validation spécifique pour QCM : au moins une bonne réponse
+    if (type === "QCM") {
+      const bonnesReponses = reponses.filter((r) => r.valeur === true);
+      if (bonnesReponses.length === 0) {
+        setError("Un QCM doit avoir au moins une bonne réponse.");
+        return;
+      }
+    }
+
+    // Validation pour QCU : Obligatoirement une seule réponse
+    if (type === "QCU") {
+      const bonnesReponses = reponses.filter((r) => r.valeur === true);
+      if (bonnesReponses.length === 0) {
+        setError("Un QCU doit avoir une bonne réponse.");
+        return;
+      } else if (bonnesReponses.length > 1) {
+        setError("Un QCU ne peut avoir qu'une seule bonne réponse.");
+        return;
+      }
+    }
+
+    try {
+      setError(""); // on efface l'erreur si la validation passe
+      let questionId = null;
 
       // Si on modifie une question existante
       if (questionToEdit) {
-        await axios.put(
+        await axiosInstance.put(
           `/api/v1/question/update/${questionToEdit.id}`,
           questionReq
         );
         questionId = questionToEdit.id;
       } else {
         // Si on crée une nouvelle question
-        const res = await axios.post("/api/v1/question/create", questionReq);
+        const res = await axiosInstance.post("/api/v1/question/create", questionReq);
         questionId = res.data.id;
       }
 
       // Si c'est une QCM ou QCU, on ajoute les réponses associées
       if (type === "QCM" || type === "QCU") {
         for (const rep of reponses) {
-          await axios.post("/api/v1/question/create-reponse", {
+          await axiosInstance.post("/api/v1/question/create-reponse", {
             texte: rep.texte,
             valeur: rep.valeur,
             questionId: questionId,
           });
         }
-      }else{
-        await axios.post("/api/v1/question/create-reponse", {
+      } else {
+        await axiosInstance.post("/api/v1/question/create-reponse", {
           texte: "",
           valeur: false,
           questionId: questionId,

@@ -1,4 +1,4 @@
-package com.example.RegisterLogin.groupe;
+package com.example.demo.groupe;
 
 import java.util.List;
 
@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.RegisterLogin.appuser.AppUser;
-import com.example.RegisterLogin.appuser.AppUserRepository;
+import com.example.demo.appuser.AppUser;
+import com.example.demo.appuser.AppUserRepository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;

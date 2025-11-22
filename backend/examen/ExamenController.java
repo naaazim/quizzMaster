@@ -1,18 +1,18 @@
-package com.example.RegisterLogin.examen;
+package com.example.demo.examen;
 
 
 import org.springframework.http.HttpStatus;import org.springframework.http.ResponseEntity;import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import com.example.RegisterLogin.PasseExamen.PasseExamen;
-import com.example.RegisterLogin.PasseExamen.PasseExamenEtat;
-import com.example.RegisterLogin.PasseExamen.PasseExamenRepository;
-import com.example.RegisterLogin.PasseExamen.PasseExamenService;
-import com.example.RegisterLogin.appuser.AppUser;
-import com.example.RegisterLogin.appuser.AppUserRepository;
-import com.example.RegisterLogin.appuser.AppUserRole;
-import com.example.RegisterLogin.question.Question;
+import com.example.demo.PasseExamen.PasseExamen;
+import com.example.demo.PasseExamen.PasseExamenEtat;
+import com.example.demo.PasseExamen.PasseExamenRepository;
+import com.example.demo.PasseExamen.PasseExamenService;
+import com.example.demo.appuser.AppUser;
+import com.example.demo.appuser.AppUserRepository;
+import com.example.demo.appuser.AppUserRole;
+import com.example.demo.question.Question;
 
 import lombok.AllArgsConstructor;
 
