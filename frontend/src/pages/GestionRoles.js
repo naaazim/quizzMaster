@@ -4,7 +4,7 @@ import axiosInstance from "../axiosInstance";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import succesImg from "../assets/succes.png";
-import style from "../style/roles.module.css"
+import styles from "../style/roles.module.css"
 
 function DB_ADMIN() {
   const [userId, setUserId] = useState(null);
@@ -145,145 +145,311 @@ function DB_ADMIN() {
   return (
     <Layout title="Gestion des utilisateurs">
       {succes && (
-        <div style={{
-          position: 'fixed',
-          top: '25%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          background: 'var(--surface)',
-          backdropFilter: 'blur(12px)',
-          border: '1px solid var(--success)',
-          borderRadius: 'var(--radius-md)',
-          padding: '1.5rem',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '1rem',
-          zIndex: 1000
-        }}>
-          <img src={succesImg} width={60} alt="Success" />
-          <p style={{ color: 'var(--success)', margin: 0, fontWeight: 600 }}>Changement effectué avec succès</p>
+        <div className={styles.successNotification}>
+          <img src={succesImg} className={styles.successIcon} alt="Success" />
+          <p className={styles.successMessage}>Changement effectué avec succès</p>
         </div>
       )}
-      <div style={{
-        display: 'flex',
-        justifyContent: 'center',
-        flexWrap: 'wrap',
-        gap: '0.5rem',
-        margin: '2rem auto',
-        maxWidth: '1200px'
-      }}>
-        {actions.map((action, index) => (
-          <button key={index} className={index == selectedIndex ? style.buttonActionActive : style.buttonAction} onClick={() => { setSelectedIndex(index) }}>{action}</button>
-        ))}
+
+      <div className={styles.container}>
+        {/* Tabs */}
+        <div className={styles.tabsContainer}>
+          {actions.map((action, index) => (
+            <button
+              key={index}
+              className={index === selectedIndex ? styles.tabActive : styles.tab}
+              onClick={() => setSelectedIndex(index)}
+            >
+              {action}
+            </button>
+          ))}
+        </div>
+
+        {/* Examinateurs à valider */}
+        {selectedIndex === 0 && (
+          <div>
+            <div className={styles.sectionHeader}>
+              <h2 className={styles.sectionTitle}>Liste des examinateurs en attente</h2>
+              {examinateurs.length > 0 && (
+                <button className={styles.headerButton} onClick={() => validateAllExaminateur()}>
+                  ✓ Tout valider
+                </button>
+              )}
+            </div>
+
+            {examinateurs.length > 0 ? (
+              <div className={styles.usersGrid}>
+                {examinateurs.map((user) => (
+                  <div key={user.id} className={styles.userCard}>
+                    <div className={styles.userInfo}>
+                      <div className={styles.userName}>{user.firstName} {user.lastName}</div>
+                      <select
+                        className={styles.roleSelect}
+                        value={roles[user.email]}
+                        onChange={(e) => handleRoleChange(user.email, e.target.value)}
+                      >
+                        <option value="EXAMINATEUR">EXAMINATEUR</option>
+                        <option value="EXAMINE">EXAMINÉ</option>
+                        <option value="ADMIN">ADMIN</option>
+                      </select>
+                    </div>
+                    <div className={styles.actionButtons}>
+                      <button className={`${styles.actionButton} ${styles.btnDelete}`} onClick={() => deleteUser(user.email)}>
+                        Supprimer
+                      </button>
+                      <button className={`${styles.actionButton} ${styles.btnValidate}`} onClick={() => validateUser(user.email)}>
+                        Valider
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className={styles.emptyState}>
+                <h3>Aucun examinateur en attente</h3>
+                <p>Tous les examinateurs ont été validés</p>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Examinés à valider */}
+        {selectedIndex === 1 && (
+          <div>
+            <div className={styles.sectionHeader}>
+              <h2 className={styles.sectionTitle}>Liste des examinés en attente</h2>
+              {examines.length > 0 && (
+                <button className={styles.headerButton} onClick={() => validateAllExamine()}>
+                  ✓ Tout valider
+                </button>
+              )}
+            </div>
+
+            {examines.length > 0 ? (
+              <div className={styles.usersGrid}>
+                {examines.map((user) => (
+                  <div key={user.id} className={styles.userCard}>
+                    <div className={styles.userInfo}>
+                      <div className={styles.userName}>{user.firstName} {user.lastName}</div>
+                    </div>
+                    <div className={styles.actionButtons}>
+                      <button className={`${styles.actionButton} ${styles.btnDelete}`} onClick={() => deleteUser(user.email)}>
+                        Supprimer
+                      </button>
+                      <button className={`${styles.actionButton} ${styles.btnValidate}`} onClick={() => validateUser(user.email)}>
+                        Valider
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className={styles.emptyState}>
+                <h3>Aucun examiné en attente</h3>
+                <p>Tous les examinés ont été validés</p>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Gestion des rôles */}
+        {selectedIndex === 2 && (
+          <div>
+            <div className={styles.sectionHeader}>
+              <h2 className={styles.sectionTitle}>Liste des utilisateurs</h2>
+              <button className={styles.headerButton} onClick={() => setAjout(true)}>
+                + Ajouter un utilisateur
+              </button>
+            </div>
+
+            {users.length > 0 ? (
+              <div className={styles.usersGrid}>
+                {users.map((user) => (
+                  <div key={user.id} className={styles.userCard}>
+                    <div className={styles.userInfo}>
+                      <div className={styles.userName}>{user.firstName} {user.lastName}</div>
+                      <select
+                        className={styles.roleSelect}
+                        value={roles[user.email]}
+                        onChange={(e) => handleRoleChange(user.email, e.target.value)}
+                      >
+                        <option value="EXAMINATEUR">EXAMINATEUR</option>
+                        <option value="EXAMINE">EXAMINÉ</option>
+                        <option value="ADMIN">ADMIN</option>
+                      </select>
+                    </div>
+                    <div className={styles.actionButtons}>
+                      <button className={`${styles.actionButton} ${styles.btnDelete}`} onClick={() => deleteUser(user.email)}>
+                        Supprimer
+                      </button>
+                      <button className={`${styles.actionButton} ${styles.btnValidate}`} onClick={() => updateUser(user.email, roles[user.email])}>
+                        Valider
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className={styles.emptyState}>
+                <h3>Aucun utilisateur inscrit</h3>
+                <p>Commencez par ajouter un utilisateur</p>
+              </div>
+            )}
+          </div>
+        )}
       </div>
-      {selectedIndex == 0 && (<div className='d-flex flex-column justify-content-center'>
-        <h2 className='montserrat mx-auto text-center '>Liste des examinateurs en attente</h2>
-        {examinateurs.length > 0 && (<button className='btn btn-outline-primary mx-auto w-400 rounded-2 p-2' onClick={() => validateAllExaminateur()}>Tout valider</button>
-        )}
-        {examinateurs.length > 0 && examinateurs.map((user) => (
-          <div key={user.id} className='d-flex flex-md-row justify-content-center m-3'>
-            <p className='bg-bleu p-3 rounded-3 w-400 text-white text-center montserrat m-2'>{user.firstName} {user.lastName}</p>
-            <select className='border border-warning m-2 rounded-3 montserrat' value={roles[user.email]} onChange={(e) => handleRoleChange(user.email, e.target.value)}>
-              <option value={"EXAMINATEUR"}>EXAMINATEUR</option>
-              <option value={"EXAMINE"}>EXAMINE</option>
-              <option value={"ADMIN"}>ADMIN</option>
-            </select>
-            <button className='btn btn-outline-danger m-2' onClick={() => { deleteUser(user.email) }}>Supprimer</button>
-            <button className='btn btn-outline-primary m-2' onClick={() => { validateUser(user.email) }}>Valider</button>
+
+      {/* Add User Modal - Compact Version with Overlay */}
+      {ajout && (
+        <>
+          {/* Overlay - Click outside to close */}
+          <div
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              background: 'rgba(0, 0, 0, 0.7)',
+              backdropFilter: 'blur(4px)',
+              zIndex: 999
+            }}
+            onClick={() => { setAjout(false); setErreur(false); }}
+          />
+
+          {/* Modal Content */}
+          <div
+            style={{
+              position: 'fixed',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              width: '90%',
+              maxWidth: '500px',
+              zIndex: 1000
+            }}
+            className='card-glass p-3'
+            onClick={(e) => e.stopPropagation()} // Empêche la fermeture quand on clique dans le formulaire
+          >
+            <button className='position-absolute top-0 end-0 btn-close m-2' aria-label='Close' onClick={() => { setAjout(false); setErreur(false) }}></button>
+
+            <h3 className='text-center mb-3' style={{ fontSize: '1.25rem' }}>Ajouter un utilisateur</h3>
+
+            {erreur && (
+              <div style={{
+                color: 'var(--error)',
+                background: 'rgba(239, 68, 68, 0.1)',
+                padding: '0.5rem',
+                borderRadius: 'var(--radius-sm)',
+                marginBottom: '1rem',
+                textAlign: 'center',
+                fontSize: '0.9rem'
+              }}>
+                ✗ {message}
+              </div>
+            )}
+
+            <form onSubmit={(event) => { event.preventDefault(); addUser(); }}>
+              {/* Prénom et Nom sur la même ligne */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '0.75rem' }}>
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '0.25rem', color: 'var(--text-muted)' }}>
+                    Prénom
+                  </label>
+                  <input
+                    required
+                    type="text"
+                    className="input-primary"
+                    placeholder="Prénom"
+                    style={{ height: '48px', fontSize: '0.95rem' }}
+                    onChange={(event) => setFirstName(event.target.value)}
+                  />
+                </div>
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '0.25rem', color: 'var(--text-muted)' }}>
+                    Nom
+                  </label>
+                  <input
+                    required
+                    type="text"
+                    className="input-primary"
+                    placeholder="Nom"
+                    style={{ height: '48px', fontSize: '0.95rem' }}
+                    onChange={(event) => setLastName(event.target.value)}
+                  />
+                </div>
+              </div>
+
+              {/* Email */}
+              <div style={{ marginBottom: '0.75rem' }}>
+                <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '0.25rem', color: 'var(--text-muted)' }}>
+                  E-mail
+                </label>
+                <input
+                  required
+                  type="email"
+                  className="input-primary"
+                  placeholder="exemple@email.com"
+                  style={{ height: '48px', fontSize: '0.95rem' }}
+                  onChange={(event) => setEmail(event.target.value)}
+                />
+              </div>
+
+              {/* Mot de passe et Rôle sur la même ligne */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '1rem' }}>
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '0.25rem', color: 'var(--text-muted)' }}>
+                    Mot de passe
+                  </label>
+                  <input
+                    type="password"
+                    className="input-primary"
+                    placeholder="••••••••"
+                    style={{ height: '48px', fontSize: '0.95rem' }}
+                    onChange={(event) => setPassword(event.target.value)}
+                  />
+                </div>
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '0.25rem', color: 'var(--text-muted)' }}>
+                    Rôle
+                  </label>
+                  <select
+                    className="select-primary"
+                    style={{
+                      height: '48px',
+                      fontSize: '1rem',
+                      fontWeight: 600,
+                      color: '#ffffff',
+                      background: 'rgba(255, 255, 255, 0.1)',
+                      paddingLeft: '1rem',
+                      lineHeight: '48px'
+                    }}
+                    onChange={(e) => setRole(e.target.value)}
+                    value={role}
+                  >
+                    <option value="EXAMINATEUR" style={{ background: 'var(--background)', color: 'var(--text-primary)' }}>Examinateur</option>
+                    <option value="EXAMINE" style={{ background: 'var(--background)', color: 'var(--text-primary)' }}>Examiné</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Bouton de soumission */}
+              <button
+                type="submit"
+                className="btn-primary"
+                style={{
+                  width: '100%',
+                  height: '48px',
+                  fontSize: '1rem',
+                  fontWeight: 600
+                }}
+              >
+                Ajouter l'utilisateur
+              </button>
+            </form>
           </div>
-        ))}
-        {examinateurs.length == 0 && (<><h3 className='text-danger montserrat mx-auto text-center'>Aucun examinateur en attente</h3></>)}
-      </div>)}
-      {selectedIndex == 1 && (<div className='d-flex flex-column justify-content-center'>
-        <h2 className='montserrat mx-auto text-center '>Liste des examinés en attente</h2>
-        {examines.length > 0 && (<button className='btn btn-outline-primary mx-auto w-400 rounded-2 p-2' onClick={() => validateAllExamine()}>Tout valider</button>
-        )}
-        {examines.length > 0 && examines.map((user) => (
-          <div key={user.id} className='d-flex flex-md-row justify-content-center m-3'>
-            <p className='bg-bleu p-3 rounded-3 w-400 text-white text-center montserrat m-2'>{user.firstName} {user.lastName}</p>
-            <button className='btn btn-outline-danger m-2' onClick={() => { deleteUser(user.email) }}>Supprimer</button>
-            <button className='btn btn-outline-primary m-2' onClick={() => { validateUser(user.email) }}>Valider</button>
-          </div>
-        ))}
-        {examines.length == 0 && (<><h3 className='text-danger montserrat mx-auto text-center'>Aucun examine en attente</h3></>)}
-      </div>)}
-      {selectedIndex == 2 && (<div className='d-flex flex-column justify-content-center'>
-        <h2 className='montserrat mx-auto text-center '>Liste des utilisateurs</h2>
-        {users.length > 0 && users.map((user) => (
-          <div key={user.id} className='d-flex flex-md-row justify-content-center m-3'>
-            <p className='bg-bleu p-3 rounded-3 w-400 text-white text-center montserrat m-2'>{user.firstName} {user.lastName}</p>
-            <select className='border border-warning m-2 rounded-3 montserrat' value={roles[user.email]} onChange={(e) => handleRoleChange(user.email, e.target.value)}>
-              <option value={"EXAMINATEUR"}>EXAMINATEUR</option>
-              <option value={"EXAMINE"}>EXAMINE</option>
-              <option value={"ADMIN"}>ADMIN</option>
-            </select>
-            <button className='btn btn-outline-danger m-2' onClick={() => { deleteUser(user.email) }}>Supprimer</button>
-            <button className='btn btn-outline-primary m-2' onClick={() => { updateUser(user.email, roles[user.email]) }}>Valider</button>
-          </div>
-        ))}
-        {users.length == 0 && (<><h3 className='text-danger montserrat mx-auto text-center'>Aucun utilisateur inscrit</h3></>)}
-        <button className='btn btn-outline-primary mx-auto w-400 rounded-5 p-2' onClick={() => setAjout(true)}>Ajouter un utilisateur</button>
-      </div>)}
-      {ajout && (<div className='p-4 justify-content-center d-flex flex-column rounded-3 border border-warning bg-white position-fixed top-50 start-50 translate-middle w-50 '>
-        <button className='position-absolute top-0 end-0 btn-close m-2' aria-label='Close' onClick={() => { setAjout(false); setErreur(false) }}></button>
-        <h3 className='text-center montserrat'>Ajouter un utilisateur</h3>
-        {erreur && (<p style={{ color: 'var(--error)', textAlign: 'center', marginBottom: '1rem' }}>✗ {message}</p>)}
-        <form className={style.formContainer} onSubmit={(event) => { event.preventDefault(); addUser(); }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.25rem' }}>
-            <div className={style.formGroup}>
-              <label className={style.label}>Prénom</label>
-              <input
-                required
-                type="text"
-                className={style.input}
-                id="FirstName"
-                placeholder="Entrez votre prénom"
-                onChange={(event) => setFirstName(event.target.value)}
-              />
-            </div>
-            <div className={style.formGroup}>
-              <label className={style.label}>Nom</label>
-              <input
-                required
-                type="text"
-                className={style.input}
-                id="LastName"
-                placeholder="Entrez votre nom"
-                onChange={(event) => setLastName(event.target.value)}
-              />
-            </div>
-          </div>
-          <div className={style.formGroup}>
-            <label className={style.label}>E-mail</label>
-            <input
-              required
-              type="email"
-              className={style.input}
-              id="email"
-              placeholder="Entrez votre Email"
-              onChange={(event) => setEmail(event.target.value)}
-            />
-          </div>
-          <div className={style.formGroup}>
-            <label className={style.label}>Mot de passe</label>
-            <input
-              type="password"
-              className={style.input}
-              id="password"
-              placeholder="Entrez votre mot de passe"
-              onChange={(event) => setPassword(event.target.value)}
-            />
-          </div>
-          <div className={style.formGroup}>
-            <label className={style.label}>Attribuer le rôle :</label>
-            <select className={style.select} onChange={(e) => setRole(e.target.value)} value={role}>
-              <option value="EXAMINATEUR">Examinateur</option>
-              <option value="EXAMINE">Examiné</option>
-            </select>
-          </div>
-          <button type="submit" className={style.submitBtn}>Valider</button>
-        </form>
-      </div>)}
+        </>
+      )}
 
     </Layout>
   );

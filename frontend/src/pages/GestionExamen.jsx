@@ -23,7 +23,7 @@ const GestionExamens = () => {
           createurId: userId,
         },
       });
-      if (user.appUserRole == "ADMIN") {
+      if (user.appUserRole === "ADMIN") {
         res = await axiosInstance.get(`/api/v1/examens/get-all`);
 
       }
@@ -82,7 +82,7 @@ const GestionExamens = () => {
           <div key={exam.id} className={styles["examen-card"]}>
             <span>{exam.intitule}</span>
             <span>{exam.note_max}</span>
-            <div>
+            <div style={{ display: 'flex', gap: '1rem' }}>
               <button
                 className={styles["bt-supprimer"]}
                 onClick={() => handleConfirmDelete(exam.id)}

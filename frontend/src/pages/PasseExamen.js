@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axiosInstance from '../axiosInstance';
-import Navbar from "../components/Navbar.js";
+import styles from '../style/PasseExamen.module.css';
 
 function PasseExamen() {
   const { id: examenId } = useParams();
@@ -188,87 +188,82 @@ function PasseExamen() {
     return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
   };
 
-  if (isLoading) return <div>Chargement des questions...</div>;
-  if (questions.length === 0) return <div>Aucune question trouvée.</div>;
+  if (isLoading) return <div className={styles.container}><div className={styles.content}>Chargement des questions...</div></div>;
+  if (questions.length === 0) return <div className={styles.container}><div className={styles.content}>Aucune question trouvée.</div></div>;
 
   const currentQuestion = questions[currentQuestionIndex];
   const currentOptions = options[currentQuestion.id] || [];
   const currentReponse = reponses.find(r => r.questionId === currentQuestion.id) || { texte: '', reponseIds: [] };
 
   return (
-    <>
-      <Navbar title={"PASSAGE D'EXAMEN"} />
-      <div className='bgImage'></div>
-      <div style={{ padding: '20px' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
-          <h2>EXAMEN: {questions[0]?.examen?.intitule || 'Examen'}</h2>
-          <div style={{ fontSize: '24px', fontWeight: 'bold' }}>
-            Temps restant: {formatTime(timeLeft)}
+    <div className={styles.container}>
+      <header className={styles.header}>
+        <div className={styles.examTitle}>{questions[0]?.examen?.intitule || 'Examen'}</div>
+        <div className={styles.timer}>
+          {formatTime(timeLeft)}
+        </div>
+      </header>
+
+      <main className={styles.content}>
+        <div className={styles.questionCard}>
+          <div className={styles.questionHeader}>
+            <span>Question {currentQuestionIndex + 1} / {questions.length}</span>
+            <span>{currentQuestion.nbPoints} Points</span>
           </div>
-        </div>
 
-        <div style={{ border: '1px solid #ccc', padding: '20px', borderRadius: '5px' }}>
-          <h3>Question {currentQuestionIndex + 1}/{questions.length}</h3>
-          <p><strong>Type:</strong> {currentQuestion.type}</p>
-          <p><strong>Points:</strong> {currentQuestion.nbPoints}</p>
-          <hr />
-          <p style={{ fontSize: '18px', margin: '20px 0' }}>{currentQuestion.texte}</p>
+          <h2 className={styles.questionText}>{currentQuestion.texte}</h2>
 
-          {currentQuestion.type === 'LIBRE' && (
-            <textarea
-              style={{ width: '100%', minHeight: '100px', padding: '10px' }}
-              placeholder="Votre réponse..."
-              value={currentReponse.texte}
-              onChange={(e) => handleReponseChange(e, currentQuestion.id)}
-            />
-          )}
+          <div className={styles.answerSection}>
+            {currentQuestion.type === 'LIBRE' && (
+              <textarea
+                className={styles.textArea}
+                placeholder="Tapez votre réponse ici..."
+                value={currentReponse.texte}
+                onChange={(e) => handleReponseChange(e, currentQuestion.id)}
+              />
+            )}
 
-          {(currentQuestion.type === 'QCM' || currentQuestion.type === 'QCU') && (
-            <div style={{ marginLeft: '20px' }}>
-              {currentOptions.map(option => (
-                <div key={option.id} style={{ margin: '10px 0' }}>
-                  <input
-                    type={currentQuestion.type === 'QCM' ? 'checkbox' : 'radio'}
-                    id={`option-${option.id}`}
-                    name={`question-${currentQuestion.id}`}
-                    value={option.id}
-                    checked={currentReponse.reponseIds.includes(option.id)}
-                    onChange={(e) => handleReponseChange(e, currentQuestion.id)}
-                  />
-                  <label htmlFor={`option-${option.id}`} style={{ marginLeft: '10px' }}>
-                    {option.texte}
+            {(currentQuestion.type === 'QCM' || currentQuestion.type === 'QCU') && (
+              <div className={styles.optionsGrid}>
+                {currentOptions.map(option => (
+                  <label
+                    key={option.id}
+                    className={`${styles.optionCard} ${currentReponse.reponseIds.includes(option.id) ? styles.selected : ''}`}
+                  >
+                    <input
+                      className={styles.optionInput}
+                      type={currentQuestion.type === 'QCM' ? 'checkbox' : 'radio'}
+                      name={`question-${currentQuestion.id}`}
+                      value={option.id}
+                      checked={currentReponse.reponseIds.includes(option.id)}
+                      onChange={(e) => handleReponseChange(e, currentQuestion.id)}
+                    />
+                    <span className={styles.optionLabel}>{option.texte}</span>
                   </label>
-                </div>
-              ))}
-            </div>
-          )}
+                ))}
+              </div>
+            )}
 
-          {currentQuestion.type === 'PIECE' && (
-            <div style={{ marginTop: '15px' }}>
-              <label><strong>Uploader votre pièce jointe :</strong></label>
-              <input type="file" onChange={(e) => handleFileChange(e, currentQuestion.id)} />
-            </div>
-          )}
+            {currentQuestion.type === 'PIECE' && (
+              <div className={styles.fileInputContainer}>
+                <p style={{ marginBottom: '1rem' }}>Veuillez joindre votre fichier de réponse</p>
+                <input type="file" onChange={(e) => handleFileChange(e, currentQuestion.id)} />
+              </div>
+            )}
+          </div>
+
+          <footer className={styles.footer}>
+            <button
+              className={styles.nextButton}
+              onClick={handleNextQuestion}
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? 'Envoi...' : (currentQuestionIndex < questions.length - 1 ? 'Suivant' : 'Terminer l\'examen')}
+            </button>
+          </footer>
         </div>
-
-        <button
-          onClick={handleNextQuestion}
-          disabled={isSubmitting}
-          style={{
-            marginTop: '20px',
-            padding: '10px 20px',
-            backgroundColor: isSubmitting ? '#cccccc' : '#4CAF50',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: isSubmitting ? 'not-allowed' : 'pointer',
-            float: 'right'
-          }}
-        >
-          {isSubmitting ? 'Envoi en cours...' : (currentQuestionIndex < questions.length - 1 ? 'Question suivante' : 'Terminer l\'examen')}
-        </button>
-      </div>
-    </>
+      </main>
+    </div>
   );
 }
 

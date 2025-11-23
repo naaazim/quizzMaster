@@ -25,6 +25,8 @@ axiosInstance.interceptors.response.use(
       response?.status === 401 ||
       response?.data === "Une erreur est survenue : Access Denied"
     ) {
+      localStorage.removeItem("jwt_token");
+      localStorage.removeItem("user");
       window.location.href = "/login";
     }
     return Promise.reject(error);

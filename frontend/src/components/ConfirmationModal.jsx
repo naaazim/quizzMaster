@@ -1,4 +1,3 @@
-import React from "react";
 import styles from "../style/ConfirmationModal.module.css";
 import Modal from "./Modal";
 

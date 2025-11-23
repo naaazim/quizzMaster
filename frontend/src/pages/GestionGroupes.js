@@ -6,6 +6,7 @@ import ListeExaminesPasDansGroupe from "../components/ListeExaminesPasDansGroupe
 import CreationGroupe from "../components/CreationGroupes";
 import { useNavigate } from "react-router-dom";
 import styles from "../style/GestionGroupes.module.css";
+import PopUp from "../components/popUp";
 
 function GestionGroupes() {
     const [groupes, setGroupes] = useState([]);
@@ -14,6 +15,7 @@ function GestionGroupes() {
     const [groupeId, setGroupeId] = useState(null);
     const [popupGroupe, setPopupGroupe] = useState(false);
     const [ajout, setAjout] = useState(false);
+    const [showSuccess, setShowSuccess] = useState(false);
 
     const naviguer = useNavigate();
     const userId = JSON.parse(localStorage.getItem("user"))?.id;
@@ -86,6 +88,8 @@ function GestionGroupes() {
             await fetchExamines();
             await fetchNonExamines();
             setPopupFalse();
+            setShowSuccess(true);
+            setTimeout(() => setShowSuccess(false), 3000);
         } catch (error) {
             console.error("Erreur lors de l'ajout :", error);
         }
@@ -107,6 +111,7 @@ function GestionGroupes() {
     return (
         <Layout title="Gestion des groupes">
             <div className={styles.pageContainer}>
+                {showSuccess && <PopUp message="Groupe ajouté avec succès !" etat="success" />}
                 <div className={styles.actionBar}>
                     <div className={styles.groupSelector}>
                         <label className={styles.label}>Groupe :</label>

@@ -2,7 +2,6 @@ import Navbar from "../components/Navbar";
 import styles from "../style/CorrectionExamen.module.css";
 import { useEffect, useState } from "react";
 import axiosInstance from "../axiosInstance";
-import PopUp from "../components/popUp"; // Changé de popUp à PopUp
 import { useParams, useLocation } from "react-router-dom";
 
 function CorrectionExamen() {
@@ -14,7 +13,8 @@ function CorrectionExamen() {
     const [loading, setLoading] = useState(true);
     const [examenInfo, setExamenInfo] = useState('');
     const [examineInfo, setExamineInfo] = useState('');
-    const [popup, setPopup] = useState({ message: "", etat: "" });
+    const [submissionStatus, setSubmissionStatus] = useState({});
+
     useEffect(() => {
         if (examineId && examenId) {
             const endpoint =
@@ -51,32 +51,35 @@ function CorrectionExamen() {
             ...prev,
             [reponseId]: note
         }));
-    };
-
-    const refreshPage = () => {
-        window.location.reload();
+        // Reset status when user changes note
+        if (submissionStatus[reponseId]) {
+            setSubmissionStatus(prev => ({ ...prev, [reponseId]: null }));
+        }
     };
 
     const soumettreCorrection = (reponseId, questionId) => {
-        if (corrections[reponseId] <= reponsesACorriger.find(u => u.id == reponseId).reponse.question.nbPoints && corrections[reponseId] >= 0) {
+        const reponse = reponsesACorriger.find(u => u.id === reponseId);
+        if (corrections[reponseId] <= reponse.reponse.question.nbPoints && corrections[reponseId] >= 0) {
             axiosInstance.put(`/api/v1/repond/corriger`, {
                 userId: examineId,
                 questionId,
                 note: corrections[reponseId]
             })
                 .then(() => {
-                    setPopup({ message: "Correction enregistrée", etat: "success" });
+                    setSubmissionStatus(prev => ({ ...prev, [reponseId]: 'success' }));
+                    // Optional: clear success message after a few seconds
                     setTimeout(() => {
-                        refreshPage();
-                    }, 2000);
+                        setSubmissionStatus(prev => ({ ...prev, [reponseId]: null }));
+                    }, 3000);
                 })
                 .catch(error => {
                     console.error("Erreur lors de l'enregistrement :", error);
-                    setPopup({ message: "Erreur lors de l'enregistrement", etat: "failure" })
+                    setSubmissionStatus(prev => ({ ...prev, [reponseId]: 'error' }));
                 });
         }
         else {
-            setPopup({ message: "La note doit être conforme", etat: "failure" })
+            // alert("La note doit être conforme"); // Or handle validation error in UI
+            setSubmissionStatus(prev => ({ ...prev, [reponseId]: 'invalid' }));
         }
     };
 
@@ -120,7 +123,6 @@ function CorrectionExamen() {
 
     return (
         <>
-            {popup.message && <PopUp message={popup.message} etat={popup.etat} />} {/* Changé de popUp à PopUp */}
             <Navbar title={"CORRECTION DES EXAMENS"} />
             <div className={styles.examensACorriger}>
                 <div className={styles.examenContainer}>
@@ -133,11 +135,11 @@ function CorrectionExamen() {
                         {reponsesACorriger.map((response, idx) => (
                             <div key={idx} className={styles.divReponse}>
                                 <div>
-                                    <p><strong style={{ color: "#ffb600" }}>Question :</strong> {response.reponse?.question?.texte || "Question avec PJ"}</p>
-                                    <p style={{ width: "70%" }}>
-                                        <strong style={{ color: "#ffb600" }}>Réponse :</strong>
+                                    <p><strong>Question :</strong> {response.reponse?.question?.texte || "Question avec PJ"}</p>
+                                    <p style={{ width: "100%" }}>
+                                        <strong>Réponse :</strong>
                                         {response.piece ? (
-                                            <button onClick={() => downloadPieceJointe(response.piece.id)}>
+                                            <button className="btn-secondary" onClick={() => downloadPieceJointe(response.piece.id)}>
                                                 Télécharger la pièce jointe
                                             </button>
                                         ) : (
@@ -145,28 +147,47 @@ function CorrectionExamen() {
                                         )}
                                     </p>
                                 </div>
-                                {(response.reponse.question.type != "QCM" && response.reponse.question.type != "QCU") && (<div className={styles.divCorrection}>
-                                    <div className={styles.correctionContainer}>
-                                        <label className={styles.maCheckbox}>Note : </label>
-                                        <input
-                                            value={corrections[response.id]}
-                                            style={{ height: "25px", width: "50px", cursor: "pointer" }}
-                                            type="number"
-                                            onChange={(e) => handleNoteChange(response.id, e.target.value)}
-                                        />
+                                {(response.reponse.question.type != "QCM" && response.reponse.question.type != "QCU") && (
+                                    <div className={styles.divCorrection}>
+                                        <div className={styles.correctionControls}>
+                                            <div className={styles.inputGroup}>
+                                                <label className={styles.maCheckbox}>Note : </label>
+                                                <input
+                                                    value={corrections[response.id]}
+                                                    className="input-primary"
+                                                    style={{ width: "70px", padding: "0.4rem" }}
+                                                    type="number"
+                                                    onChange={(e) => handleNoteChange(response.id, e.target.value)}
+                                                />
+                                            </div>
+                                            <button
+                                                onClick={() => soumettreCorrection(
+                                                    response.id,
+                                                    response.reponse?.question?.id || 0
+                                                )}
+                                                className="btn-primary"
+                                                disabled={submissionStatus[response.id] === 'success'}
+                                            >
+                                                {submissionStatus[response.id] === 'success' ? 'Enregistré' : 'Soumettre'}
+                                            </button>
+                                        </div>
+                                        {submissionStatus[response.id] === 'success' && (
+                                            <span className={styles.successMessage}>
+                                                ✓ Correction sauvegardée
+                                            </span>
+                                        )}
+                                        {submissionStatus[response.id] === 'invalid' && (
+                                            <span className={styles.errorMessage}>
+                                                ⚠ Note invalide (Max: {response.reponse.question.nbPoints})
+                                            </span>
+                                        )}
+                                        {submissionStatus[response.id] === 'error' && (
+                                            <span className={styles.errorMessage}>
+                                                ⚠ Erreur lors de l'enregistrement
+                                            </span>
+                                        )}
                                     </div>
-                                    <div className={styles.divSoumettre}>
-                                        <button
-                                            onClick={() => soumettreCorrection(
-                                                response.id,
-                                                response.reponse?.question?.id || 0
-                                            )}
-                                            className={styles.boutonSoumettre}
-                                        >
-                                            Soumettre correction
-                                        </button>
-                                    </div>
-                                </div>)}
+                                )}
 
                             </div>
                         ))}

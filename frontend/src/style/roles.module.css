@@ -1,171 +1,364 @@
-/* Roles Management - Glassmorphism Tab Navigation */
+/* User Management - Complete Redesign with Pixel-Perfect Alignment */
 
-.buttonAction {
-    flex: 1 1 200px;
-    max-width: 250px;
-    padding: 1rem 1.5rem;
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 3rem 2rem;
+}
+
+/* Top Section - Tabs - CENTERED */
+.tabsContainer {
+    display: flex;
+    justify-content: center;
+    gap: 1.25rem;
+    margin-bottom: 3rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: var(--radius-lg);
+}
+
+.tab {
+    height: 48px;
+    padding: 0 2.5rem;
     background: transparent;
     color: var(--text-primary);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: var(--radius-sm);
-    font-size: 0.95rem;
+    font-size: 1rem;
     font-weight: 600;
     font-family: var(--font-body);
     cursor: pointer;
-    transition: all 0.2s ease;
-    text-align: center;
-    margin: 0.5rem;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: 0.3px;
 }
 
-.buttonAction:hover {
-    background: rgba(255, 255, 255, 0.05);
+.tab:hover {
+    background: rgba(255, 255, 255, 0.08);
     border-color: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-.buttonActionActive {
-    flex: 1 1 200px;
-    max-width: 250px;
-    padding: 1rem 1.5rem;
-    background: var(--primary);
+.tabActive {
+    height: 48px;
+    padding: 0 2.5rem;
+    background: linear-gradient(135deg, var(--primary), hsl(250, 100%, 60%));
     color: white;
     border: 1px solid var(--primary);
     border-radius: var(--radius-sm);
-    font-size: 0.95rem;
+    font-size: 1rem;
     font-weight: 600;
     font-family: var(--font-body);
     cursor: pointer;
-    transition: all 0.2s ease;
-    text-align: center;
-    margin: 0.5rem;
-    box-shadow: var(--shadow-glow);
-}
-
-.buttonActionActive:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 0 30px var(--primary-glow);
-}
-
-/* User Card */
-.userCard {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1rem;
-    background: var(--surface);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: var(--radius-md);
-    padding: 1.5rem;
-    margin: 1rem 0;
     transition: all 0.3s ease;
+    box-shadow: 0 8px 24px var(--primary-glow);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: 0.3px;
 }
 
-.userCard:hover {
-    background: var(--surface-hover);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+.tabActive:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px var(--primary-glow);
 }
 
-.userName {
-    background: rgba(99, 102, 241, 0.2);
-    border: 1px solid var(--primary);
+/* Section Header with Action Button */
+.sectionHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2.5rem;
+    gap: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.sectionTitle {
+    font-size: 2rem;
+    font-weight: 700;
     color: var(--text-primary);
-    padding: 0.75rem 1.5rem;
-    border-radius: 20px;
-    min-width: 200px;
-    text-align: center;
-    font-weight: 600;
+    margin: 0;
+    background: linear-gradient(135deg, var(--text-primary), var(--primary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
-/* Form Styles */
-.formContainer {
-    background: var(--surface);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: var(--radius-md);
-    padding: 2rem;
-    margin: 2rem auto;
-    max-width: 600px;
-}
-
-.formGroup {
-    margin-bottom: 1.25rem;
-}
-
-.label {
-    display: block;
-    margin-bottom: 0.5rem;
-    color: var(--text-muted);
-    font-size: 0.9rem;
-    font-weight: 500;
-}
-
-.input,
-.select {
-    width: 100%;
-    padding: 0.75rem 1rem;
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: var(--radius-sm);
-    color: var(--text-primary);
-    font-size: 0.95rem;
-    transition: all 0.2s;
-}
-
-.input:focus,
-.select:focus {
-    outline: none;
-    border-color: var(--primary);
-    background: rgba(0, 0, 0, 0.4);
-    box-shadow: 0 0 0 3px var(--primary-glow);
-}
-
-.input::placeholder {
-    color: var(--text-muted);
-    opacity: 0.6;
-}
-
-.select option {
-    background: var(--background);
-    color: var(--text-primary);
-}
-
-.submitBtn {
-    width: 100%;
-    padding: 0.875rem;
-    background: var(--primary);
+.headerButton {
+    height: 48px;
+    padding: 0 2rem;
+    background: linear-gradient(135deg, var(--primary), hsl(250, 100%, 60%));
     color: white;
     border: none;
     border-radius: var(--radius-sm);
     font-weight: 600;
-    font-size: 1rem;
-    margin-top: 0.5rem;
     cursor: pointer;
-    transition: all 0.2s;
-    box-shadow: var(--shadow-glow);
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 16px var(--primary-glow);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    white-space: nowrap;
 }
 
-.submitBtn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 0 20px var(--primary-glow);
+.headerButton:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px var(--primary-glow);
 }
 
-@media screen and (max-width: 768px) {
+/* User Cards Grid */
+.usersGrid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
 
-    .buttonAction,
-    .buttonActionActive {
-        max-width: 100%;
-        margin: 0.25rem 0;
+.userCard {
+    display: grid;
+    grid-template-columns: 2fr 1fr auto;
+    align-items: center;
+    gap: 2rem;
+    background: var(--surface);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: var(--radius-lg);
+    padding: 1.75rem 2rem;
+    transition: all 0.4s ease;
+    min-height: 90px;
+    position: relative;
+    overflow: hidden;
+}
+
+.userCard::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(180deg, var(--primary), var(--secondary));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.userCard:hover::before {
+    opacity: 1;
+}
+
+.userCard:hover {
+    background: var(--surface-hover);
+    transform: translateX(8px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.userInfo {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.userName {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.25), rgba(0, 188, 212, 0.25));
+    border: 1.5px solid var(--primary);
+    color: var(--text-primary);
+    padding: 0.75rem 1.75rem;
+    border-radius: 32px;
+    font-weight: 700;
+    font-size: 1rem;
+    min-width: 220px;
+    text-align: center;
+    letter-spacing: 0.3px;
+    text-transform: capitalize;
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.2);
+}
+
+.roleSelect {
+    height: 48px;
+    padding: 0 1.25rem;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1.5px solid rgba(255, 255, 255, 0.25);
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    font-weight: 600;
+    font-family: var(--font-body);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 170px;
+}
+
+.roleSelect:hover {
+    border-color: var(--primary);
+    background: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 0 12px var(--primary-glow);
+}
+
+.roleSelect:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-glow);
+}
+
+.roleSelect option {
+    background: var(--background);
+    color: var(--text-primary);
+    padding: 0.5rem;
+}
+
+.actionButtons {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.actionButton {
+    height: 48px;
+    padding: 0 1.75rem;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    letter-spacing: 0.2px;
+}
+
+.btnValidate {
+    background: linear-gradient(135deg, var(--primary), hsl(250, 100%, 60%));
+    color: white;
+    box-shadow: 0 4px 12px var(--primary-glow);
+}
+
+.btnValidate:hover {
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 6px 20px var(--primary-glow);
+}
+
+.btnDelete {
+    background: transparent;
+    border: 1.5px solid var(--error);
+    color: var(--error);
+}
+
+.btnDelete:hover {
+    background: var(--error);
+    color: white;
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 4px 16px rgba(239, 68, 68, 0.4);
+}
+
+/* Empty State */
+.emptyState {
+    text-align: center;
+    padding: 5rem 2rem;
+    color: var(--text-muted);
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: var(--radius-lg);
+    border: 1px dashed rgba(255, 255, 255, 0.1);
+}
+
+.emptyState h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--text-primary);
+}
+
+.emptyState p {
+    font-size: 1rem;
+    opacity: 0.7;
+}
+
+/* Success Notification */
+.successNotification {
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--surface);
+    backdrop-filter: blur(16px);
+    border: 2px solid var(--success);
+    border-radius: var(--radius-lg);
+    padding: 1.75rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    z-index: 1000;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+    animation: slideDown 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -120%);
     }
 
-    .userCard {
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+.successIcon {
+    width: 56px;
+    height: 56px;
+    flex-shrink: 0;
+}
+
+.successMessage {
+    color: var(--success);
+    margin: 0;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .container {
+        padding: 1.5rem 1rem;
+    }
+
+    .tabsContainer {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .tab,
+    .tabActive {
+        width: 100%;
+    }
+
+    .sectionHeader {
         flex-direction: column;
         align-items: stretch;
     }
 
-    .formContainer {
+    .sectionTitle {
+        font-size: 1.5rem;
+    }
+
+    .userCard {
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
         padding: 1.5rem;
+    }
+
+    .actionButtons {
+        flex-wrap: wrap;
+    }
+
+    .actionButton {
+        flex: 1;
+        min-width: 120px;
     }
 }

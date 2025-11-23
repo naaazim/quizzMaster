@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axiosInstance from "../axiosInstance";
 import styles from '../style/login.module.css';
 import { useNavigate, Link } from "react-router-dom";
@@ -10,6 +10,28 @@ function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
   const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    const token = localStorage.getItem("jwt_token");
+    const userStr = localStorage.getItem("user");
+
+    if (token && userStr) {
+      try {
+        const user = JSON.parse(userStr);
+        if (user.appUserRole === "EXAMINE") {
+          navigate("/dashboard-examine");
+        } else if (
+          user.appUserRole === "EXAMINATEUR" ||
+          user.appUserRole === "ADMIN"
+        ) {
+          navigate("/dashboard-examinateur");
+        }
+      } catch (e) {
+        localStorage.removeItem("jwt_token");
+        localStorage.removeItem("user");
+      }
+    }
+  }, [navigate]);
 
   async function handleSubmit(event) {
     event.preventDefault();

@@ -68,52 +68,101 @@ function Analyses() {
     }, [examenId]);
 
     if (examens.length == 0) {
-        return (<>
-            <Navbar title={"Analyses"} />
-            <h1 className="mx-auto text-danger w-400 text-center">Aucun examen trouvé</h1>
-        </>)
+        return (
+            <>
+                <Navbar title={"Analyses"} />
+                <div className={style.container}>
+                    <div className={style.emptyState}>
+                        <h1>Aucun examen trouvé</h1>
+                    </div>
+                </div>
+            </>
+        )
     }
     if (nb == 0) {
-        return (<>
-            <Navbar title={"Analyses"} />
-            <div className="d-flex flex-row align-items-center m-3">
-                <h2 className="montserrat m-3">Examen :</h2>
-                <select className="border border-warning rounded-3 w-200 p-2" onChange={(e) => setExamenId(e.target.value)} value={examenId || ""}>
-                    {examens.map((examen) => (
-                        <option key={examen.id} value={examen.id}>{examen.intitule}</option>
-                    ))}
-                </select>
-            </div>
-            <h3 className="mx-auto text-danger w-400 text-center">Aucun passage n'a été effectué</h3>
-        </>)
+        return (
+            <>
+                <Navbar title={"Analyses"} />
+                <div className={style.container}>
+                    <div className={style.header}>
+                        <h2>Examen :</h2>
+                        <select className={style.select} onChange={(e) => setExamenId(e.target.value)} value={examenId || ""}>
+                            {examens.map((examen) => (
+                                <option key={examen.id} value={examen.id}>{examen.intitule}</option>
+                            ))}
+                        </select>
+                    </div>
+                    <div className={style.emptyState}>
+                        <h3>Aucun passage n'a été effectué</h3>
+                    </div>
+                </div>
+            </>
+        )
     }
+    const formatStat = (val) => {
+        if (val === null || val === undefined || isNaN(val)) return "-";
+        return val;
+    };
+
     return (
         <>
             <Navbar title={"Analyses"} />
-            <div className='bgImage'></div>
-            <div className="d-flex flex-row align-items-center m-3">
-                <h2 className="montserrat m-3">Examen :</h2>
-                <select className="border border-warning rounded-3 w-200 p-2" onChange={(e) => setExamenId(e.target.value)} value={examenId || ""}>
-                    {examens.map((examen) => (
-                        <option key={examen.id} value={examen.id}>{examen.intitule}</option>
-                    ))}
-                </select>
-            </div>
-            <div className={style.analysesContainer}>
-                <div className="d-flex flex-column justify-content-center">
-                    <div className="d-flex flex-row m-3 align-items-center">
-                        <img src="utilisateur.png" style={{ width: "50px", height: "50px" }}></img>
-                        <h4>Nombre de passages : {nb}</h4>
-                    </div>
-                    <h2 className="montserrat m-3 text-center">Taux de réussite</h2>
-                    <CircularProgressBar sqSize={300} strokeWidth={10} percentage={taux * 100} />
+            <div className={style.container}>
+                <div className={style.header}>
+                    <h2>Examen :</h2>
+                    <select className={style.select} onChange={(e) => setExamenId(e.target.value)} value={examenId || ""}>
+                        {examens.map((examen) => (
+                            <option key={examen.id} value={examen.id}>{examen.intitule}</option>
+                        ))}
+                    </select>
                 </div>
-                <div className={style.notes}>
-                    <p className={style.note}>Note moyenne :  {moy}/{examens.find((examen) => examen.id === examenId)?.note_max}</p>
-                    <p className={style.note}>Note maximale :  {max}/{examens.find((examen) => examen.id === examenId)?.note_max}</p>
-                    <p className={style.note}>Note minimale :  {min}/{examens.find((examen) => examen.id === examenId)?.note_max}</p>
-                    <p className={style.note}>Note médiane :  {med}/{examens.find((examen) => examen.id === examenId)?.note_max}</p>
-                    <p className={style.note}>Ecart type :  {ecart}</p>
+
+                <div className={style.analysesContent}>
+                    <div className={style.chartSection}>
+                        <div className={style.passagesInfo}>
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                style={{ color: '#e2e8f0' }}
+                            >
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                            <h4>Nombre de passages : {nb}</h4>
+                        </div>
+                        <h2 className={style.chartTitle}>Taux de réussite</h2>
+                        <CircularProgressBar sqSize={250} strokeWidth={10} percentage={isNaN(taux) ? 0 : taux * 100} />
+                    </div>
+
+                    <div className={style.statsSection}>
+                        <div className={style.statCard}>
+                            <span className={style.statLabel}>Note moyenne</span>
+                            <span className={style.statValue}>{formatStat(moy)}<span>/{examens.find((examen) => examen.id === examenId)?.note_max}</span></span>
+                        </div>
+                        <div className={style.statCard}>
+                            <span className={style.statLabel}>Note maximale</span>
+                            <span className={style.statValue}>{formatStat(max)}<span>/{examens.find((examen) => examen.id === examenId)?.note_max}</span></span>
+                        </div>
+                        <div className={style.statCard}>
+                            <span className={style.statLabel}>Note minimale</span>
+                            <span className={style.statValue}>{formatStat(min)}<span>/{examens.find((examen) => examen.id === examenId)?.note_max}</span></span>
+                        </div>
+                        <div className={style.statCard}>
+                            <span className={style.statLabel}>Note médiane</span>
+                            <span className={style.statValue}>{formatStat(med)}<span>/{examens.find((examen) => examen.id === examenId)?.note_max}</span></span>
+                        </div>
+                        <div className={style.statCard}>
+                            <span className={style.statLabel}>Ecart type</span>
+                            <span className={style.statValue}>{formatStat(ecart)}</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </>

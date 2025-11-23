@@ -143,7 +143,7 @@ const CreerQuestionModal = ({ examenId, onClose, onQuestionCreated, questionToEd
   };
 
   return (
-    <div className={styles["modal-overlay"]}>
+    <>
       <div className={styles["modal-container"]}>
         <h2>{questionToEdit ? "Modifier la question" : "Créer une question"}</h2>
         <form onSubmit={handleSubmit}>
@@ -223,7 +223,7 @@ const CreerQuestionModal = ({ examenId, onClose, onQuestionCreated, questionToEd
           </div>
         </form>
       </div>
-    </div>
+    </>
   );
 };
 
