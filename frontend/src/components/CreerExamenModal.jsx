@@ -2,6 +2,7 @@ import { useState } from "react";
 import styles from "../style/CreerExamenModal.module.css";
 import Modal from "./Modal";
 import axiosInstance from "../api";
+import { CookieService } from "../utils/cookieUtils";
 
 const CreerExamenModal = ({ onClose, onCreate }) => {
   const [intitule, setIntitule] = useState("");
@@ -25,9 +26,9 @@ const CreerExamenModal = ({ onClose, onCreate }) => {
     }
 
     try {
-      const userId = JSON.parse(localStorage.getItem("user")).id;
+      const userId = CookieService.getUser()?.id;
       await axiosInstance.post(
-        `/api/v1/examens/create/${userId}`,
+        `/v1/examens/create/${userId}`,
         {
           intitule: intitule,
           note_max: noteMax,

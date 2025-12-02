@@ -35,69 +35,63 @@ import java.util.List;
 @RequiredArgsConstructor
 public class WebSecurityConfig {
 
-    private final JwtAuthentificationFilter jwtAuthentificationFilter;
-    private final AuthenticationProvider authenticationProvider;
-    private final OAuth2SuccessHandler successHandler;
-    private final OAuth2FailureHandler failureHandler;
+        private final JwtAuthentificationFilter jwtAuthentificationFilter;
+        private final AuthenticationProvider authenticationProvider;
+        private final OAuth2SuccessHandler successHandler;
+        private final OAuth2FailureHandler failureHandler;
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        @Bean
+        public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .csrf(csrf -> csrf.disable())
+                http
+                                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                                .csrf(csrf -> csrf.disable())
 
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(
-                                "/api/v1/auth/**",
-                                "/oauth2/**",
-                                "/login**"
-                        ).permitAll()
-                        .anyRequest().authenticated()
-                )
+                                .authorizeHttpRequests(auth -> auth
+                                                .requestMatchers(
+                                                                "/api/v1/auth/**",
+                                                                "/oauth2/**",
+                                                                "/login**")
+                                                .permitAll()
+                                                .anyRequest().authenticated())
 
-                .sessionManagement(sess -> sess
-                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-                )
+                                .sessionManagement(sess -> sess
+                                                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
 
-                .oauth2Login(oauth -> oauth
-                        .successHandler(successHandler)
-                        .failureHandler(failureHandler)
-                )
+                                .oauth2Login(oauth -> oauth
+                                                .successHandler(successHandler)
+                                                .failureHandler(failureHandler))
 
-                .authenticationProvider(authenticationProvider)
+                                .authenticationProvider(authenticationProvider)
 
-                .addFilterAfter(jwtAuthentificationFilter, OAuth2LoginAuthenticationFilter.class);
+                                .addFilterAfter(jwtAuthentificationFilter, OAuth2LoginAuthenticationFilter.class);
 
-        return http.build();
-    }
+                return http.build();
+        }
 
-    @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
-        return http.getSharedObject(AuthenticationManagerBuilder.class).build();
-    }
+        @Bean
+        public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
+                return http.getSharedObject(AuthenticationManagerBuilder.class).build();
+        }
 
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration config = new CorsConfiguration();
+        @Bean
+        public CorsConfigurationSource corsConfigurationSource() {
+                CorsConfiguration config = new CorsConfiguration();
 
-        config.setAllowedOrigins(List.of(
-                "http://localhost:3000",
-                "http://quizzmaster.fr",
-                "https://quizzmaster.fr"
-        ));
+                config.setAllowedOrigins(List.of(
+                                "http://localhost:3000",
+                                "https://quizzmaster.dontforget.site"));
 
-        config.setAllowedMethods(List.of(
-                "GET", "POST", "PUT", "DELETE", "OPTIONS"
-        ));
+                config.setAllowedMethods(List.of(
+                                "GET", "POST", "PUT", "DELETE", "OPTIONS"));
 
-        config.setAllowedHeaders(List.of("*"));
-        config.setExposedHeaders(List.of("*"));
-        config.setAllowCredentials(true);
+                config.setAllowedHeaders(List.of("*"));
+                config.setExposedHeaders(List.of("*"));
+                config.setAllowCredentials(true);
 
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", config);
+                UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+                source.registerCorsConfiguration("/**", config);
 
-        return source;
-    }
+                return source;
+        }
 }

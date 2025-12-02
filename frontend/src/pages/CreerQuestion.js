@@ -16,7 +16,7 @@ function CreerQuestion({ examenId }) {
 
     async function saveQuestion(event) {
         event.preventDefault();
-        const question = await axiosInstance.post("/api/v1/question/create", {
+        const question = await axiosInstance.post("/v1/question/create", {
             type: type,
             texte: texte,
             nbPoints: nbPoints,
@@ -25,7 +25,7 @@ function CreerQuestion({ examenId }) {
 
         if (type === "QCM" || type === "QCU") {
             options.forEach((reponse) => {
-                axiosInstance.post("/api/v1/question/create-reponse", {
+                axiosInstance.post("/v1/question/create-reponse", {
                     texte: reponse.texte,
                     valeur: reponse.valeur,
                     questionId: question.data.id
@@ -33,7 +33,7 @@ function CreerQuestion({ examenId }) {
 
             });
         } else {
-            axiosInstance.post("/api/v1/question/create-reponse", {
+            axiosInstance.post("/v1/question/create-reponse", {
                 texte: "",
                 valeur: false,
                 questionId: question.data.id

@@ -1,6 +1,7 @@
 import Layout from "../components/Layout";
 import React, { useEffect, useState } from "react";
 import axiosInstance from "../axiosInstance";
+import { CookieService } from "../utils/cookieUtils";
 import ListeExaminesDansGroupe from "../components/ListesExaminesDansGroupe";
 import ListeExaminesPasDansGroupe from "../components/ListeExaminesPasDansGroupe";
 import CreationGroupe from "../components/CreationGroupes";
@@ -18,14 +19,14 @@ function GestionGroupes() {
     const [showSuccess, setShowSuccess] = useState(false);
 
     const naviguer = useNavigate();
-    const userId = JSON.parse(localStorage.getItem("user"))?.id;
-    const user = JSON.parse(localStorage.getItem("user"));
+    const userId = CookieService.getUser()?.id;
+    const user = CookieService.getUser();
 
     const fetchGroupes = async () => {
         try {
-            let response = await axiosInstance.get(`/api/v1/groupe/get-by-user/${userId}`);
+            let response = await axiosInstance.get(`/v1/groupe/get-by-user/${userId}`);
             if (user.appUserRole == "ADMIN") {
-                response = await axiosInstance.get(`/api/v1/groupe/get-all`);
+                response = await axiosInstance.get(`/v1/groupe/get-all`);
             }
             setGroupes(response.data);
         } catch (error) {
@@ -36,7 +37,7 @@ function GestionGroupes() {
     const fetchExamines = async () => {
         if (!groupeId) return;
         try {
-            const response = await axiosInstance.get(`/api/v1/appartient-groupe/get-users-in/${groupeId}`);
+            const response = await axiosInstance.get(`/v1/appartient-groupe/get-users-in/${groupeId}`);
             setExamines(response.data);
         } catch (error) {
             console.error("Erreur lors de la récupération des examinés :", error);
@@ -46,7 +47,7 @@ function GestionGroupes() {
     const fetchNonExamines = async () => {
         if (!groupeId) return;
         try {
-            const response = await axiosInstance.get(`/api/v1/appartient-groupe/get-users-not-in/${groupeId}`);
+            const response = await axiosInstance.get(`/v1/appartient-groupe/get-users-not-in/${groupeId}`);
             setNonExamines(response.data);
         } catch (error) {
             console.error("Erreur lors de la récupération des non-examinés :", error);
@@ -72,7 +73,7 @@ function GestionGroupes() {
 
     const supprimerDuGroupe = async (id) => {
         try {
-            await axiosInstance.delete(`/api/v1/appartient-groupe/supprimer/${id}/${groupeId}`);
+            await axiosInstance.delete(`/v1/appartient-groupe/supprimer/${id}/${groupeId}`);
             await fetchGroupes();
             await fetchExamines();
             await fetchNonExamines();
@@ -83,7 +84,7 @@ function GestionGroupes() {
 
     const ajouterGroupe = async (intitule) => {
         try {
-            await axiosInstance.post(`/api/v1/groupe/create`, { intitule: intitule, createurId: userId });
+            await axiosInstance.post(`/v1/groupe/create`, { intitule: intitule, createurId: userId });
             await fetchGroupes();
             await fetchExamines();
             await fetchNonExamines();
@@ -97,7 +98,7 @@ function GestionGroupes() {
 
     const ajouterdansGroupe = async (id) => {
         try {
-            await axiosInstance.post(`/api/v1/appartient-groupe/ajouter/${id}/${groupeId}`);
+            await axiosInstance.post(`/v1/appartient-groupe/ajouter/${id}/${groupeId}`);
             await fetchGroupes();
             await fetchExamines();
             await fetchNonExamines();

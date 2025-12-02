@@ -12,7 +12,7 @@ const QuestionCard = ({ question, onEdit, onDelete }) => {
     const fetchReponses = async () => {
       try {
         const res = await axiosInstance.get(
-          `/api/v1/question/${question.id}/reponses`  // Requête HTTP pour récupérer les réponses associées à la question via son ID
+          `/v1/question/${question.id}/reponses`  // Requête HTTP pour récupérer les réponses associées à la question via son ID
         );
         setReponses(res.data || []); // Stockage des réponses dans l'état local
       } catch (err) {

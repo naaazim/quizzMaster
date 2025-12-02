@@ -1,17 +1,16 @@
 import { useState } from 'react';
 import { useNavigate, Link } from "react-router-dom";
+import { CookieService } from "../utils/cookieUtils";
 import styles from "../style/Navbar.module.css";
 
 function Navbar({ title }) {
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const userDataString = localStorage.getItem("user");
-  const user = userDataString ? JSON.parse(userDataString) : null;
+  const user = CookieService.getUser();
 
   const handleLogout = () => {
-    localStorage.removeItem("user");
-    localStorage.removeItem("jwt_token");
+    CookieService.clearAuth();
     navigate("/login");
   };
 

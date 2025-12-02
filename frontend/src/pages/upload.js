@@ -45,7 +45,7 @@ function FileUpload() {
 
     try {
       const response = await axiosInstance.post(
-        "http://localhost:8080/api/v1/repond",
+        "/v1/repond",
         formData, {
         headers: {
           "Content-Type": "multipart/form-data",

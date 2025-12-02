@@ -16,7 +16,7 @@ function PageDeQuestion({ examId, onNext }) {
     const idQuestion = questionActuelle?.id;
 
     useEffect(() => {
-        fetch(`http://localhost:8080/api/v1/examens/9/questions`)
+        fetch(`${process.env.REACT_APP_API_URL}/v1/examens/9/questions`)
             .then((res) => res.json())
             .then((data) => { setListeQuestions(data); console.log(data[0].temps) })
             .catch((err) => console.error("Erreur pendant le chargement:", err));
@@ -48,7 +48,7 @@ function PageDeQuestion({ examId, onNext }) {
         formData.append("request", new Blob([JSON.stringify(donnees)], { type: "application/json" }));
         formData.append("file", fichier);
 
-        return fetch("http://localhost:8080/api/v1/repond", {
+        return fetch(`${process.env.REACT_APP_API_URL}/v1/repond`, {
             method: "POST",
             body: formData,
         }).then((res) => res.json());

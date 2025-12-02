@@ -93,7 +93,7 @@ public class AuthenticationService {
 
                 confirmationTokenService.saveConfirmationToken(confirmationToken);
 
-                String link = "https://quizzmaster.fr/activate-account?token=" + token;
+                String link = "https://quizzmaster.dontforget.site/activate-account?token=" + token;
                 emailSender.send(request.getEmail(), buildEmail(request.getFirstName(), link));
 
                 throw new IllegalStateException("compte pas encore activé");
@@ -120,7 +120,7 @@ public class AuthenticationService {
 
         confirmationTokenService.saveConfirmationToken(confirmationToken);
 
-        String link = "https://localhost:3000/activate-account?token=" + token;
+        String link = "https://quizzmaster.dontforget.site/activate-account?token=" + token;
         emailSender.send(request.getEmail(), buildEmail(request.getFirstName(), link));
 
         return token;

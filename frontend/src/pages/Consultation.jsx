@@ -10,7 +10,7 @@ function Consultation() {
 
   useEffect(() => {
     // Requête pour récupérer les réponses de l'utilisateur à un examen spécifique
-    axiosInstance.get(`http://localhost:8080/api/v1/repond/get-by-exam-user/${examenId}/${userId}`)
+    axiosInstance.get(`/v1/repond/get-by-exam-user/${examenId}/${userId}`)
       .then((response) => {
         setData(response.data); // Stocke les données reçues dans le state
       })

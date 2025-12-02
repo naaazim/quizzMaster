@@ -4,6 +4,7 @@ import ListExamensAPasser from "../components/ListExamensAPasser";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../axiosInstance";
+import { CookieService } from "../utils/cookieUtils";
 
 function DashboardEtudiant() {
   const [userId, setUserId] = useState(null);
@@ -16,13 +17,13 @@ function DashboardEtudiant() {
     const token = params.get("token");
 
     if (token) {
-      localStorage.setItem("jwt_token", token);
+      CookieService.setToken(token);
 
-      axiosInstance.get("/api/v1/auth/me", {
+      axiosInstance.get("/v1/auth/me", {
         headers: { Authorization: `Bearer ${token}` }
       })
         .then(res => {
-          localStorage.setItem("user", JSON.stringify(res.data));
+          CookieService.setUser(res.data);
 
           window.history.replaceState({}, document.title, "/dashboard-examine");
           setUserId(res.data.id);
@@ -33,14 +34,13 @@ function DashboardEtudiant() {
     }
 
     // 2️⃣ Connexion normale (sans Google)
-    const userDataString = localStorage.getItem("user");
+    const userData = CookieService.getUser();
 
-    if (!userDataString) {
+    if (!userData) {
       navigate("/login");
       return;
     }
 
-    const userData = JSON.parse(userDataString);
     setUserId(userData?.id);
 
   }, [navigate]);

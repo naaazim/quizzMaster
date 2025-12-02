@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axiosInstance from '../axiosInstance';
+import { CookieService } from '../utils/cookieUtils';
 import styles from '../style/PasseExamen.module.css';
 
 function PasseExamen() {
@@ -31,7 +32,7 @@ function PasseExamen() {
   }, []);
 
   useEffect(() => {
-    const userData = JSON.parse(localStorage.getItem('user'));
+    const userData = CookieService.getUser();
     if (userData && userData.id) {
       setUserId(userData.id);
     } else {
@@ -40,8 +41,12 @@ function PasseExamen() {
   }, [navigate]);
 
   useEffect(() => {
-    if (!userId) return;
-    axiosInstance.get(`/api/v1/examens/${examenId}/questions`)
+    if (!userId || !examenId) {
+      console.warn("Missing userId or examenId", { userId, examenId });
+      return;
+    }
+    console.log("Fetching questions for examen:", examenId);
+    axiosInstance.get(`/v1/examens/${examenId}/questions`)
       .then(response => {
         setQuestions(response.data);
         const initialReponses = response.data.map(q => ({
@@ -63,7 +68,7 @@ function PasseExamen() {
     if (questions.length > 0 && currentQuestionIndex < questions.length && userId) {
       const currentQuestion = questions[currentQuestionIndex];
       if (currentQuestion.type === 'QCU' || currentQuestion.type === 'QCM') {
-        axiosInstance.get(`/api/v1/question/${currentQuestion.id}/options`)
+        axiosInstance.get(`/v1/question/${currentQuestion.id}/options`)
           .then(response => {
             setOptions(prev => ({
               ...prev,
@@ -134,7 +139,7 @@ function PasseExamen() {
 
         if (question.type === 'PIECE') {
           if (userResponse.file) {
-            const reponseFictive = await axiosInstance.get(`/api/v1/question/${question.id}/options`);
+            const reponseFictive = await axiosInstance.get(`/v1/question/${question.id}/options`);
             const formData = new FormData();
             formData.append("file", userResponse.file);
             formData.append("request", new Blob([JSON.stringify({
@@ -143,7 +148,7 @@ function PasseExamen() {
               reponseId: reponseFictive.data[0].id
             })], { type: "application/json" }));
 
-            await axiosInstance.post('/api/v1/repond/create-piece', formData, {
+            await axiosInstance.post('/v1/repond/create-piece', formData, {
               headers: { "Content-Type": "multipart/form-data" }
             });
           }
@@ -151,8 +156,8 @@ function PasseExamen() {
         }
 
         if (question.type === 'LIBRE') {
-          const reponseFictive = await axiosInstance.get(`/api/v1/question/${question.id}/options`);
-          await axiosInstance.post('/api/v1/repond', {
+          const reponseFictive = await axiosInstance.get(`/v1/question/${question.id}/options`);
+          await axiosInstance.post('/v1/repond', {
             texte: userResponse.texte || '',
             userId: userId,
             reponseId: reponseFictive.data[0].id
@@ -161,7 +166,7 @@ function PasseExamen() {
           const questionOptions = options[question.id] || [];
           for (const reponseId of userResponse.reponseIds || []) {
             const selectedOption = questionOptions.find(opt => opt.id === reponseId);
-            await axiosInstance.post('/api/v1/repond', {
+            await axiosInstance.post('/v1/repond', {
               texte: selectedOption?.texte || '',
               userId: userId,
               reponseId
@@ -170,7 +175,7 @@ function PasseExamen() {
         }
       }
 
-      await axiosInstance.post(`/api/v1/passe-examen/finir/${examenId}`);
+      await axiosInstance.post(`/v1/passe-examen/finir/${examenId}`);
       navigate(`/dashboard-examine`);
 
     } catch (error) {

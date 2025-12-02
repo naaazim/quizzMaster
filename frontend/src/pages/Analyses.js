@@ -1,6 +1,7 @@
 import Navbar from "../components/Navbar";
 import React, { useEffect, useState } from "react";
 import axiosInstance from "../axiosInstance";
+import { CookieService } from "../utils/cookieUtils";
 import CircularProgressBar from "../components/CircularProgressBar";
 import { useNavigate, useLocation } from "react-router-dom";
 import style from "../style/Analyses.module.css"
@@ -18,19 +19,19 @@ function Analyses() {
 
     const naviguer = useNavigate();
 
-    const userId = JSON.parse(localStorage.getItem("user"))?.id;
+    const userId = CookieService.getUser()?.id;
 
 
     const fetchExamens = async () => {
         try {
-            const user = JSON.parse(localStorage.getItem("user"));
-            let res = await axiosInstance.get(`/api/v1/examens/by-createur`, {
+            const user = CookieService.getUser();
+            let res = await axiosInstance.get(`/v1/examens/by-createur`, {
                 params: {
                     createurId: userId,
                 },
             });
             if (user.appUserRole == "ADMIN") {
-                res = await axiosInstance.get(`/api/v1/examens/get-all`);
+                res = await axiosInstance.get(`/v1/examens/get-all`);
 
             }
             setExamens(res.data);
@@ -49,14 +50,14 @@ function Analyses() {
         if (examenId) {
             const fetchAnalyses = async () => {
                 try {
-                    setExamens((await axiosInstance.get(`/api/v1/examens/by-createur?createurId=${userId}`)).data);
-                    setTaux((await axiosInstance.get(`/api/v1/passe-examen/taux-reussite/${examenId}`)).data);
-                    setMoy((await axiosInstance.get(`/api/v1/passe-examen/note-moy/${examenId}`)).data);
-                    setMax((await axiosInstance.get(`/api/v1/passe-examen/note-max/${examenId}`)).data);
-                    setMin((await axiosInstance.get(`/api/v1/passe-examen/note-min/${examenId}`)).data);
-                    setMed((await axiosInstance.get(`/api/v1/passe-examen/note-med/${examenId}`)).data);
-                    setNb((await axiosInstance.get(`/api/v1/passe-examen/nombre/${examenId}`)).data);
-                    setEcart((await axiosInstance.get(`/api/v1/passe-examen/ecart/${examenId}`)).data);
+                    setExamens((await axiosInstance.get(`/v1/examens/by-createur?createurId=${userId}`)).data);
+                    setTaux((await axiosInstance.get(`/v1/passe-examen/taux-reussite/${examenId}`)).data);
+                    setMoy((await axiosInstance.get(`/v1/passe-examen/note-moy/${examenId}`)).data);
+                    setMax((await axiosInstance.get(`/v1/passe-examen/note-max/${examenId}`)).data);
+                    setMin((await axiosInstance.get(`/v1/passe-examen/note-min/${examenId}`)).data);
+                    setMed((await axiosInstance.get(`/v1/passe-examen/note-med/${examenId}`)).data);
+                    setNb((await axiosInstance.get(`/v1/passe-examen/nombre/${examenId}`)).data);
+                    setEcart((await axiosInstance.get(`/v1/passe-examen/ecart/${examenId}`)).data);
 
                 } catch (error) {
                     console.log("erreur");

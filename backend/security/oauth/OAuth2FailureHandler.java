@@ -18,6 +18,6 @@ public class OAuth2FailureHandler extends SimpleUrlAuthenticationFailureHandler 
                                         AuthenticationException exception)
             throws IOException {
 
-        response.sendRedirect("http://localhost:3000/login?oauth2_error");
+        response.sendRedirect("http://quizzmaster.dontforget.site/login?oauth2_error");
     }
 }

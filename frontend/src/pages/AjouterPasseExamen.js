@@ -1,6 +1,7 @@
 import Navbar from "../components/Navbar";
 import { useEffect, useState } from "react";
 import axiosInstance from "../axiosInstance";
+import { CookieService } from "../utils/cookieUtils";
 import ListeExaminesQuiPassent from "../components/ListeExaminesQuiPassent";
 import ListeExaminesQuiPassentPas from "../components/ListeExaminesQuiPassentPas";
 import ListeGroupes from "../components/ListeGroupes";
@@ -16,12 +17,12 @@ function AjouterPasseExamen() {
     const [ajoutexamine, setAjoutExamine] = useState(false);
 
     const naviguer = useNavigate();
-    const user = JSON.parse(localStorage.getItem("user"));
-    const userId = JSON.parse(localStorage.getItem("user"))?.id;
+    const user = CookieService.getUser();
+    const userId = CookieService.getUser()?.id;
 
     const fetchGroupes = async () => {
         try {
-            const response = await axiosInstance.get(`/api/v1/groupe/get-by-user/${userId}`);
+            const response = await axiosInstance.get(`/v1/groupe/get-by-user/${userId}`);
             setGroupes(response.data);
         } catch (error) {
             console.error("Erreur lors de la récupération des examens :", error);
@@ -30,13 +31,13 @@ function AjouterPasseExamen() {
 
     const fetchExamens = async () => {
         try {
-            let res = await axiosInstance.get(`/api/v1/examens/by-createur`, {
+            let res = await axiosInstance.get(`/v1/examens/by-createur`, {
                 params: {
                     createurId: userId,
                 },
             });
             if (user.appUserRole == "ADMIN") {
-                res = await axiosInstance.get(`/api/v1/examens/get-all`);
+                res = await axiosInstance.get(`/v1/examens/get-all`);
 
             }
             setExamens(res.data);
@@ -48,7 +49,7 @@ function AjouterPasseExamen() {
     const fetchExamines = async () => {
         if (!examenId) return;
         try {
-            const response = await axiosInstance.get(`/api/v1/passe-examen/users-in-examen/${examenId}`);
+            const response = await axiosInstance.get(`/v1/passe-examen/users-in-examen/${examenId}`);
             setExamines(response.data);
         } catch (error) {
             console.error("Erreur lors de la récupération des examinés :", error);
@@ -58,7 +59,7 @@ function AjouterPasseExamen() {
     const fetchNonExamines = async () => {
         if (!examenId) return;
         try {
-            const response = await axiosInstance.get(`/api/v1/passe-examen/users-not-in-examen/${examenId}`);
+            const response = await axiosInstance.get(`/v1/passe-examen/users-not-in-examen/${examenId}`);
             setNonExamines(response.data);
         } catch (error) {
             console.error("Erreur lors de la récupération des non-examinés :", error);
@@ -97,7 +98,7 @@ function AjouterPasseExamen() {
 
     const supprimerPasseExamen = async (id) => {
         try {
-            await axiosInstance.delete(`/api/v1/passe-examen/supprimer/${id}/${examenId}`);
+            await axiosInstance.delete(`/v1/passe-examen/supprimer/${id}/${examenId}`);
             await fetchExamines();  // Rafraîchir après suppression
             await fetchNonExamines();
         } catch (error) {
@@ -107,7 +108,7 @@ function AjouterPasseExamen() {
 
     const ajouterPasseExamen = async (id) => {
         try {
-            await axiosInstance.post(`/api/v1/passe-examen/ajouter?appUserId=${id}&examenId=${examenId}`, {});
+            await axiosInstance.post(`/v1/passe-examen/ajouter?appUserId=${id}&examenId=${examenId}`, {});
             await fetchExamines();  // Rafraîchir après ajout
             await fetchNonExamines();
         } catch (error) {
@@ -117,7 +118,7 @@ function AjouterPasseExamen() {
 
     const ajouterPasseExamenGroupe = async (id) => {
         try {
-            await axiosInstance.post(`/api/v1/passe-examen/ajouter-groupe?groupeId=${id}&examenId=${examenId}`, {});
+            await axiosInstance.post(`/v1/passe-examen/ajouter-groupe?groupeId=${id}&examenId=${examenId}`, {});
             await fetchExamines();  // Rafraîchir après ajout
             await fetchNonExamines();
         } catch (error) {

@@ -1,13 +1,18 @@
 // src/axiosInstance.js
 import axios from "axios";
+import { CookieService } from "./utils/cookieUtils";
+
 
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:8080",
+  baseURL: process.env.REACT_APP_API_URL,
+  headers: {
+    "Content-Type": "application/json",
+  },
 });
 
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("jwt_token");
+    const token = CookieService.getToken();
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -15,6 +20,7 @@ axiosInstance.interceptors.request.use(
   },
   (error) => Promise.reject(error)
 );
+
 
 axiosInstance.interceptors.response.use(
   (response) => response,
@@ -25,12 +31,14 @@ axiosInstance.interceptors.response.use(
       response?.status === 401 ||
       response?.data === "Une erreur est survenue : Access Denied"
     ) {
-      localStorage.removeItem("jwt_token");
-      localStorage.removeItem("user");
-      window.location.href = "/login";
+      CookieService.clearAuth();
+      if (window.location.pathname !== "/login") {
+        window.location.href = "/login";
+      }
     }
     return Promise.reject(error);
   }
 );
+
 
 export default axiosInstance;

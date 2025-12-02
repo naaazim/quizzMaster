@@ -1,7 +1,8 @@
-import  { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from "../style/home.module.css"; // Importation du module CSS
 import axiosInstance from "../axiosInstance"; // Axios est utilisé ici à la place de fetch
 import { useNavigate } from 'react-router-dom'; // Pour rediriger l'utilisateur
+import { CookieService } from "../utils/cookieUtils";
 
 const ListExamens = () => {
   const [examens, setExamens] = useState([]); // Stocke la liste des examens
@@ -9,12 +10,11 @@ const ListExamens = () => {
   const [userId, setUserId] = useState(null); // ID de l'utilisateur connecté
   const navigate = useNavigate(); // Hook pour la navigation
 
-  // Récupération du user depuis le localStorage, et modification du style du <html>
+  // Récupération du user depuis les cookies, et modification du style du <html>
   useEffect(() => {
-    const storedUser = localStorage.getItem("user"); // Stockage dans le navigateur
-    if (storedUser) {
-      const user = JSON.parse(storedUser); // On transforme la chaîne en objet
-      setUserId(user.id); // On extrait l'ID
+    const user = CookieService.getUser();
+    if (user) {
+      setUserId(user.id);
     }
 
     // Modification temporaire du style de la page
@@ -36,7 +36,7 @@ const ListExamens = () => {
   //Axios est utilisé ici pour l'appel API (plus propre et plus simple que fetch)
   useEffect(() => {
     if (userId) {
-      axiosInstance.get(`http://localhost:8080/api/v1/passe-examen/passe-examen-by-user/${userId}`)
+      axiosInstance.get(`/v1/passe-examen/passe-examen-by-user/${userId}`)
         .then(response => {
           setExamens(response.data); // On récupère directement les données
         })

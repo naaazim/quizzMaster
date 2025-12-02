@@ -27,7 +27,7 @@ const CreerQuestionModal = ({ examenId, onClose, onQuestionCreated, questionToEd
 
       // Récupère les réponses existantes de la question à modifier
       axiosInstance
-        .get(`/api/v1/question/${questionToEdit.id}/reponses`)
+        .get(`/v1/question/${questionToEdit.id}/reponses`)
         .then((res) => setReponses(res.data))
         .catch((err) => {
           console.error("Erreur chargement des réponses :", err);
@@ -101,27 +101,27 @@ const CreerQuestionModal = ({ examenId, onClose, onQuestionCreated, questionToEd
       // Si on modifie une question existante
       if (questionToEdit) {
         await axiosInstance.put(
-          `/api/v1/question/update/${questionToEdit.id}`,
+          `/v1/question/update/${questionToEdit.id}`,
           questionReq
         );
         questionId = questionToEdit.id;
       } else {
         // Si on crée une nouvelle question
-        const res = await axiosInstance.post("/api/v1/question/create", questionReq);
+        const res = await axiosInstance.post("/v1/question/create", questionReq);
         questionId = res.data.id;
       }
 
       // Si c'est une QCM ou QCU, on ajoute les réponses associées
       if (type === "QCM" || type === "QCU") {
         for (const rep of reponses) {
-          await axiosInstance.post("/api/v1/question/create-reponse", {
+          await axiosInstance.post("/v1/question/create-reponse", {
             texte: rep.texte,
             valeur: rep.valeur,
             questionId: questionId,
           });
         }
       } else {
-        await axiosInstance.post("/api/v1/question/create-reponse", {
+        await axiosInstance.post("/v1/question/create-reponse", {
           texte: "",
           valeur: false,
           questionId: questionId,

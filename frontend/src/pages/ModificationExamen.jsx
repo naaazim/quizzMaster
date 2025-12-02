@@ -29,9 +29,9 @@ function ModifierExamen() {
   useEffect(() => {
     const chargerExamen = async () => {
       try {
-        const resExamen = await axiosInstance.get(`/api/v1/examens/${examenId}`);
+        const resExamen = await axiosInstance.get(`/v1/examens/${examenId}`);
         console.log(resExamen);
-        const resQuestions = await axiosInstance.get(`/api/v1/examens/${examenId}/questions`);
+        const resQuestions = await axiosInstance.get(`/v1/examens/${examenId}/questions`);
 
         setExamData({
           intitule: resExamen.data.intitule || "",
@@ -60,7 +60,7 @@ function ModifierExamen() {
   const confirmerSuppression = async () => {
     if (questionToDelete !== null) {
       try {
-        await axiosInstance.delete(`/api/v1/question/delete/${questionToDelete}`);
+        await axiosInstance.delete(`/v1/question/delete/${questionToDelete}`);
         await refreshQuestions(); // Recharge la liste
         setShowConfirmModal(false); // Ferme la modale
         setQuestionToDelete(null);  // Réinitialise l'ID
@@ -80,7 +80,7 @@ function ModifierExamen() {
     try {
 
       if (examData.intitule != "") {
-        await axiosInstance.post(`/api/v1/examens/modifier`,
+        await axiosInstance.post(`/v1/examens/modifier`,
           {
             id: examenId,
             intitule: examData.intitule,
@@ -97,7 +97,7 @@ function ModifierExamen() {
   // Recharge les questions de l’examen
   const refreshQuestions = async () => {
     try {
-      const res = await axiosInstance.get(`/api/v1/examens/${examenId}/questions`);
+      const res = await axiosInstance.get(`/v1/examens/${examenId}/questions`);
       setExamData((prev) => ({
         ...prev,
         questions: Array.isArray(res.data) ? res.data : [],

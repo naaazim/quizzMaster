@@ -1,6 +1,7 @@
 
 import Layout from "../components/Layout";
 import axiosInstance from "../axiosInstance";
+import { CookieService } from "../utils/cookieUtils";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import succesImg from "../assets/succes.png";
@@ -27,11 +28,11 @@ function DB_ADMIN() {
 
   const fetchUsers = async () => {
     try {
-      const token = localStorage.getItem("jwt_token");
-      const response = await axiosInstance.get(`/api/v1/user/get-to-update`);
+      const token = CookieService.getToken();
+      const response = await axiosInstance.get(`/v1/user/get-to-update`);
       setUsers(response.data);
-      setExamines((await axiosInstance.get(`/api/v1/user/get-examine-validate`)).data);
-      setExaminateurs((await axiosInstance.get(`/api/v1/user/get-examinateur-validate`)).data);
+      setExamines((await axiosInstance.get(`/v1/user/get-examine-validate`)).data);
+      setExaminateurs((await axiosInstance.get(`/v1/user/get-examinateur-validate`)).data);
 
       // Initialiser les rôles choisis avec une valeur par défaut
       const initialRoles = {};
@@ -48,14 +49,13 @@ function DB_ADMIN() {
 
 
   useEffect(() => {
-    const userDataString = localStorage.getItem("user");
-    if (!userDataString) {
+    const userData = CookieService.getUser();
+    if (!userData) {
       navigate("/login");
       return;
     }
     fetchUsers();
 
-    const userData = JSON.parse(userDataString);
     setUserId(userData?.id);
 
   }, []);
@@ -63,7 +63,7 @@ function DB_ADMIN() {
 
   const updateUser = async (email, role) => {
     try {
-      const response = await axiosInstance.put(`/api/v1/user/role`, {
+      const response = await axiosInstance.put(`/v1/user/role`, {
         email: email,
         role: role
       });
@@ -78,7 +78,7 @@ function DB_ADMIN() {
 
   const validateUser = async (mail) => {
     try {
-      await axiosInstance.put(`/api/v1/user/valider/${mail}`);
+      await axiosInstance.put(`/v1/user/valider/${mail}`);
       fetchUsers();
     } catch (error) {
 
@@ -88,7 +88,7 @@ function DB_ADMIN() {
   const validateAllExamine = async () => {
     examines.forEach(async (examine) => {
       try {
-        await axiosInstance.put(`/api/v1/user/valider/${examine.email}`);
+        await axiosInstance.put(`/v1/user/valider/${examine.email}`);
       } catch (error) {
 
       }
@@ -99,7 +99,7 @@ function DB_ADMIN() {
   const validateAllExaminateur = async () => {
     examinateurs.forEach(async (examine) => {
       try {
-        await axiosInstance.put(`/api/v1/user/valider/${examine.email}`);
+        await axiosInstance.put(`/v1/user/valider/${examine.email}`);
       } catch (error) {
 
       }
@@ -116,7 +116,7 @@ function DB_ADMIN() {
 
   const addUser = async () => {
     try {
-      await axiosInstance.post(`/api/v1/auth/admin-add`, {
+      await axiosInstance.post(`/v1/auth/admin-add`, {
         firstName: FirstName,
         lastName: LastName,
         email: email,
@@ -134,7 +134,7 @@ function DB_ADMIN() {
 
   const deleteUser = async (mail) => {
     try {
-      await axiosInstance.delete(`/api/v1/user/delete/${mail}`);
+      await axiosInstance.delete(`/v1/user/delete/${mail}`);
       fetchUsers();
     } catch (error) {
       console.log((error));

@@ -56,7 +56,7 @@ function ListeExaminesQuiPassent({ examines, fonction }) {
                                 textAlign: 'center',
                                 minWidth: '280px'
                             }}>
-                                {examine.firstName} {examine.lastName}
+                                {examine.appUser?.firstName} {examine.appUser?.lastName}
                             </div>
 
                             <button
@@ -82,7 +82,7 @@ function ListeExaminesQuiPassent({ examines, fonction }) {
                                     e.currentTarget.style.transform = 'translateY(0)';
                                     e.currentTarget.style.boxShadow = '0 4px 12px rgba(239, 68, 68, 0.4)';
                                 }}
-                                onClick={() => fonction(examine.id)}
+                                onClick={() => fonction(examine.appUser?.id)}
                             >
                                 Retirer
                             </button>

@@ -22,8 +22,8 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request,
-                                        HttpServletResponse response,
-                                        Authentication authentication)
+            HttpServletResponse response,
+            Authentication authentication)
             throws IOException, ServletException {
 
         DefaultOAuth2User oauthUser = (DefaultOAuth2User) authentication.getPrincipal();
@@ -39,7 +39,11 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         String jwt = jwtService.generateToken(user);
 
         // 3️⃣ Rediriger vers React
-        String redirectUrl = "http://localhost:3000/oauth2/redirect?token=" + jwt;
+        String baseUrl = "https://quizzmaster.dontforget.site";
+        if (request.getServerName().equals("localhost")) {
+            baseUrl = "http://localhost:3000";
+        }
+        String redirectUrl = baseUrl + "/oauth2/redirect?token=" + jwt;
 
         response.sendRedirect(redirectUrl);
     }

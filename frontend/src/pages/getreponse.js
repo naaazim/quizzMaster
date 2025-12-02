@@ -3,7 +3,7 @@ import axiosInstance from "../axiosInstance";
 function Getreponse() {
   const downloadFile = async () => {
     try {
-      const response = await axiosInstance.get(`http://localhost:8080/api/v1/repond/get-piece/4`, { responseType: "blob" });
+      const response = await axiosInstance.get(`/v1/repond/get-piece/4`, { responseType: "blob" });
 
       // Crée un objet File à partir des données binaires récupérées
 

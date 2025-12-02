@@ -15,10 +15,10 @@ function Register() {
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
   const [message, setMessage] = useState("");
-
+  
   async function save() {
     try {
-      await axiosInstance.post("/api/v1/auth/register", {
+      await axiosInstance.post("/v1/auth/register", {
         firstName: FirstName,
         lastName: LastName,
         email: email,
@@ -131,7 +131,7 @@ function Register() {
             </div>
 
             <a
-              href="http://localhost:8080/oauth2/authorization/google"
+              href={`${process.env.REACT_APP_API_URL.replace(/\/api$/, "")}/oauth2/authorization/google`}
               className={style.googleBtn}
             >
               <img

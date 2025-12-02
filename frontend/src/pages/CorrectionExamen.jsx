@@ -19,8 +19,8 @@ function CorrectionExamen() {
         if (examineId && examenId) {
             const endpoint =
                 mode === "update"
-                    ? `/api/v1/repond/get-by-exam-user/${examenId}/${examineId}`
-                    : `/api/v1/repond/getReponsesACorriger/${examineId}/${examenId}`;
+                    ? `/v1/repond/get-by-exam-user/${examenId}/${examineId}`
+                    : `/v1/repond/getReponsesACorriger/${examineId}/${examenId}`;
 
             axiosInstance.get(endpoint)
                 .then(response => {
@@ -60,7 +60,7 @@ function CorrectionExamen() {
     const soumettreCorrection = (reponseId, questionId) => {
         const reponse = reponsesACorriger.find(u => u.id === reponseId);
         if (corrections[reponseId] <= reponse.reponse.question.nbPoints && corrections[reponseId] >= 0) {
-            axiosInstance.put(`/api/v1/repond/corriger`, {
+            axiosInstance.put(`/v1/repond/corriger`, {
                 userId: examineId,
                 questionId,
                 note: corrections[reponseId]
@@ -85,7 +85,7 @@ function CorrectionExamen() {
 
     const downloadPieceJointe = async (pieceId) => {
         try {
-            const response = await axiosInstance.get(`/api/v1/repond/get-piece/${pieceId}`, {
+            const response = await axiosInstance.get(`/v1/repond/get-piece/${pieceId}`, {
                 responseType: 'blob'
             });
 

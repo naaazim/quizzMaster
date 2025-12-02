@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axiosInstance from "../axiosInstance";
+import { CookieService } from "../utils/cookieUtils";
 import styles from '../style/login.module.css';
 import { useNavigate, Link } from "react-router-dom";
 import Layout from "../components/Layout";
@@ -12,12 +13,11 @@ function Login() {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
-    const token = localStorage.getItem("jwt_token");
-    const userStr = localStorage.getItem("user");
+    const token = CookieService.getToken();
+    const user = CookieService.getUser();
 
-    if (token && userStr) {
+    if (token && user) {
       try {
-        const user = JSON.parse(userStr);
         if (user.appUserRole === "EXAMINE") {
           navigate("/dashboard-examine");
         } else if (
@@ -27,8 +27,13 @@ function Login() {
           navigate("/dashboard-examinateur");
         }
       } catch (e) {
-        localStorage.removeItem("jwt_token");
-        localStorage.removeItem("user");
+        console.error("Error parsing user data:", e);
+        CookieService.clearAuth();
+      }
+    } else {
+      // Clean up if data is invalid
+      if (token || user) {
+        CookieService.clearAuth();
       }
     }
   }, [navigate]);
@@ -36,13 +41,13 @@ function Login() {
   async function handleSubmit(event) {
     event.preventDefault();
     try {
-      const response = await axiosInstance.post("/api/v1/auth/login", {
+      const response = await axiosInstance.post("/v1/auth/login", {
         email: email,
         password: password,
       });
 
-      localStorage.setItem("jwt_token", response.data.token);
-      localStorage.setItem("user", JSON.stringify(response.data.appUser));
+      CookieService.setToken(response.data.token);
+      CookieService.setUser(response.data.appUser);
 
       if (response.data.appUser.appUserRole === "EXAMINE") {
         navigate("/dashboard-examine");
@@ -53,7 +58,12 @@ function Login() {
         navigate("/dashboard-examinateur");
       }
     } catch (err) {
-      setMessage(err.response?.data || "Erreur de connexion");
+      console.error("Login error:", err);
+      if (err.response) {
+        console.error("Error response data:", err.response.data);
+        console.error("Error response status:", err.response.status);
+      }
+      setMessage(err.response?.data || "Erreur de connexion. Veuillez vérifier vos identifiants.");
       setError(true);
     }
   }
@@ -65,7 +75,7 @@ function Login() {
       return;
     }
     try {
-      await axiosInstance.post(`/api/v1/auth/mdp-oublie/${email}`);
+      await axiosInstance.post(`/v1/auth/mdp-oublie/${email}`);
       setMessage("Vérifiez vos emails.");
       setError(true);
     } catch (err) {
@@ -132,7 +142,7 @@ function Login() {
             </div>
 
             <a
-              href="http://localhost:8080/oauth2/authorization/google"
+              href={`${process.env.REACT_APP_API_URL.replace(/\/api$/, "")}/oauth2/authorization/google`}
               className={styles.googleBtn}
             >
               <img

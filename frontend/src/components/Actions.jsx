@@ -1,9 +1,10 @@
 import { useNavigate } from "react-router-dom";
+import { CookieService } from "../utils/cookieUtils";
 import style from "../style/Actions.module.css";
 
 const Actions = () => {
   const navigate = useNavigate();
-  const user = JSON.parse(localStorage.getItem("user"));
+  const user = CookieService.getUser();
 
   return (
     <div className={style.actions}>

@@ -1,6 +1,5 @@
 package com.example.demo.repond;
 
-
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,21 +12,18 @@ import lombok.RequiredArgsConstructor;
 import java.io.IOException;
 import java.util.List;
 
-
-
-
 @RestController
 @RequestMapping("api/v1/repond")
-@CrossOrigin(origins = "http://localhost:3000")
 @RequiredArgsConstructor
+
 public class RepondController {
-    
+
     private final RepondRepository repondRepository;
     private final RepondService repondService;
     private final PieceRepository pieceRepository;
 
     @GetMapping
-    public ResponseEntity<List<Repond>> getAllRepond(){
+    public ResponseEntity<List<Repond>> getAllRepond() {
         return new ResponseEntity<>(repondRepository.findAll(), HttpStatus.OK);
     }
 
@@ -37,12 +33,13 @@ public class RepondController {
     }
 
     @PostMapping("/create-piece")
-    public ResponseEntity<Repond> createRepondPiece(@RequestPart("request") RepondRequest request, @RequestPart("file") MultipartFile file) throws IOException {
+    public ResponseEntity<Repond> createRepondPiece(@RequestPart("request") RepondRequest request,
+            @RequestPart("file") MultipartFile file) throws IOException {
         return ResponseEntity.ok(repondService.createRepondPiece(request, file));
     }
 
     @GetMapping("/getReponsesACorriger/{userId}/{examenId}")
-    public List<Repond> getReponsesACorriger(@PathVariable long userId,@PathVariable long examenId ){
+    public List<Repond> getReponsesACorriger(@PathVariable long userId, @PathVariable long examenId) {
         return repondService.getReponsesACorrigger(userId, examenId);
     }
 
@@ -56,12 +53,12 @@ public class RepondController {
     }
 
     @GetMapping("/get-by-exam-user/{examenId}/{userId}")
-    public List<Repond> getByExamenAndUserId(@PathVariable long examenId, @PathVariable long userId){
+    public List<Repond> getByExamenAndUserId(@PathVariable long examenId, @PathVariable long userId) {
         return repondService.getUserReponses(userId, examenId);
     }
 
     @GetMapping("/get-by-id/{repondId}")
-    public Repond getById(@PathVariable long repondId){
+    public Repond getById(@PathVariable long repondId) {
         return repondRepository.findById(repondId).orElseThrow();
     }
 
@@ -70,4 +67,3 @@ public class RepondController {
         repondService.noterReponse(repondRequest);
     }
 }
-

@@ -14,7 +14,7 @@ const ListExamensACorriger = ({ examinateurId }) => {
     // Récupération des examens à corriger pour l'examinateur
     const fetchExamens = async () => {
       try {
-        const response = await axiosInstance.get(`/api/v1/passe-examen/examen-a-corriger/${examinateurId}`);
+        const response = await axiosInstance.get(`/v1/passe-examen/examen-a-corriger/${examinateurId}`);
         setExamens(response.data);
       } catch (error) {
         console.error("Erreur lors de la récupération des examens corrigés :", error);

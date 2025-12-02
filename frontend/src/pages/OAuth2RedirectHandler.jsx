@@ -2,6 +2,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../axiosInstance";
+import { CookieService } from "../utils/cookieUtils";
 
 export default function OAuth2RedirectHandler() {
   const navigate = useNavigate();
@@ -16,16 +17,16 @@ export default function OAuth2RedirectHandler() {
     }
 
     // Sauvegarde du token
-    localStorage.setItem("jwt_token", token);
+    CookieService.setToken(token);
 
     // Récupération du user depuis le backend
-    axiosInstance.get("/api/v1/auth/me", {
+    axiosInstance.get("/v1/auth/me", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     })
       .then(res => {
-        localStorage.setItem("user", JSON.stringify(res.data));
+        CookieService.setUser(res.data);
 
         const role = res.data.appUserRole;
 

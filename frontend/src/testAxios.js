@@ -1,14 +1,17 @@
 // src/testAxios.js - Script de test pour vérifier axiosInstance
 import axiosInstance from "./axiosInstance";
 
+import { CookieService } from "./utils/cookieUtils";
+
 export const testConnection = async () => {
     try {
         console.log("🔍 Test de connexion axiosInstance");
         console.log("Base URL:", axiosInstance.defaults.baseURL);
-        console.log("Token JWT:", localStorage.getItem("jwt_token") ? "✅ Présent" : "❌ Manquant");
+        console.log("Token JWT:", CookieService.getToken() ? "✅ Présent" : "❌ Manquant");
+
 
         // Test ping
-        const response = await axiosInstance.get("/api/v1/health");
+        const response = await axiosInstance.get("/v1/health");
         console.log("✅ Connexion réussie:", response.data);
     } catch (error) {
         console.error("❌ Erreur de connexion:", error.message);

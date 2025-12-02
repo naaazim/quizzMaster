@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axiosInstance from "../axiosInstance";
+import { CookieService } from "../utils/cookieUtils";
 import CreerExamenModal from "../components/CreerExamenModal";
 import Layout from "../components/Layout";
 import { useNavigate } from "react-router-dom";
@@ -16,15 +17,15 @@ const GestionExamens = () => {
   // Fonction permettant de récuperer les examens crée par l'examinateur connecté
   const fetchExamens = async () => {
     try {
-      const userId = JSON.parse(localStorage.getItem("user")).id;
-      const user = JSON.parse(localStorage.getItem("user"));
-      let res = await axiosInstance.get(`/api/v1/examens/by-createur`, {
+      const userId = CookieService.getUser().id;
+      const user = CookieService.getUser();
+      let res = await axiosInstance.get(`/v1/examens/by-createur`, {
         params: {
           createurId: userId,
         },
       });
       if (user.appUserRole === "ADMIN") {
-        res = await axiosInstance.get(`/api/v1/examens/get-all`);
+        res = await axiosInstance.get(`/v1/examens/get-all`);
 
       }
       setExamens(res.data);
@@ -36,7 +37,7 @@ const GestionExamens = () => {
   // Fonction pour supprimer un examen
   const deleteExamen = async (id) => {
     try {
-      await axiosInstance.delete(`/api/v1/examens/${id}`);
+      await axiosInstance.delete(`/v1/examens/${id}`);
       fetchExamens();
     } catch (error) {
       console.error("Erreur lors de la suppression :", error);

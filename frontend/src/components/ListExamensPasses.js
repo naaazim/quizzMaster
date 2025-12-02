@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import styles from "../style/listExamen.module.css"; // Importation du module CSS
 import axiosInstance from "../axiosInstance"; // Axios est utilisé ici à la place de fetch
 import { useNavigate } from 'react-router-dom'; // Pour rediriger l'utilisateur
+import { CookieService } from "../utils/cookieUtils";
 
 const ListExamens = () => {
   const [examens, setExamens] = useState([]); // Stocke la liste des examens
@@ -12,7 +13,7 @@ const ListExamens = () => {
   const navigate = useNavigate(); // Hook pour la navigation
 
   const recupererNote = async (examen) => {
-    return await axiosInstance.get(`/api/v1/passe-examen/get-note/${userId}/${examen}`).data;
+    return await axiosInstance.get(`/v1/passe-examen/get-note/${userId}/${examen}`).data;
   };
 
   // Récupération du user depuis le localStorage, et modification du style du <html>
@@ -22,7 +23,7 @@ const ListExamens = () => {
         const newNotes = {};
         for (let examen of examens) {
           try {
-            const res = await axiosInstance.get(`/api/v1/passe-examen/get-note/${userId}/${examen.examen.id}`);
+            const res = await axiosInstance.get(`/v1/passe-examen/get-note/${userId}/${examen.examen.id}`);
             newNotes[examen.examen.id] = res.data;
           } catch (err) {
             console.error(`Erreur pour l'examen ${examen.examen.id} :`, err);
@@ -36,17 +37,16 @@ const ListExamens = () => {
   }, [examens]);
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("user"); // Stockage dans le navigateur
-    if (storedUser) {
-      const user = JSON.parse(storedUser); // On transforme la chaîne en objet
-      setUserId(user.id); // On extrait l'ID
+    const user = CookieService.getUser();
+    if (user) {
+      setUserId(user.id);
     }
   }, []);
 
   //Axios est utilisé ici pour l'appel API (plus propre et plus simple que fetch)
   useEffect(() => {
     if (userId) {
-      axiosInstance.get(`/api/v1/passe-examen/examen-corriges/${userId}`)
+      axiosInstance.get(`/v1/passe-examen/examen-corriges/${userId}`)
         .then(response => {
           setExamens(response.data); // On récupère directement les données
         })

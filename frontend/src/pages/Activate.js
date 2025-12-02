@@ -12,7 +12,7 @@ function Activate() {
   useEffect(() => {
     async function active() {
       try {
-        const response = await axiosInstance.get(`/api/v1/auth/confirm?token=${search}`);
+        const response = await axiosInstance.get(`/v1/auth/confirm?token=${search}`);
         navigate("/login")
       } catch (err) {
 

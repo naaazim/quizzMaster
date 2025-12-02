@@ -1,7 +1,8 @@
 import Navbar from "./Navbar";
+import { CookieService } from "../utils/cookieUtils";
 
 function DB() {
-    const user = JSON.parse(localStorage.getItem("user"));
+    const user = CookieService.getUser();
     console.log(user.id);
 
     return (<>
